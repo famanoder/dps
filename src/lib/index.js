@@ -1,14 +1,17 @@
 const { formatUrl, log } = require('./utils');
 const ppteer = require('./pp');
 const evalScripts = require('./drawPageStructureScript');
+const fs = require('fs');
+const path = require('path');
 
 class DrawPageStructure {
   constructor({
       entry,
+      rootSelector = '#app',
       output
     } = {}) {
       if(!entry) {
-        log.error('please provide entry path or url !'); 
+        log.error('please provide entry path or url !', 1); 
       }
       this.entry = formatUrl(entry);
   }
@@ -18,20 +21,30 @@ class DrawPageStructure {
     const pp = await ppteer();
     log.info(`正在打开页面：${ pageUrl }...`);
     const page = await pp.openPage(pageUrl);
+    
     log.info(`正在生成骨架屏...`);
-    await page.evaluate(evalScripts);
     setTimeout(async () => {
-      const html = await page.$eval('body', e => e.outerHTML);
+      const html = await page.evaluate(evalScripts);
       log.info(html);
+
+      let pagePath = path.resolve('index.html');
+      fs.readFile(pagePath, (err, data) => {
+        if(err) {
+          log.error(err);
+        }else{
+          fs.writeFileSync(pagePath, data.toString().replace('APP', html));
+        }
+      });
+      log.info(`正在截圖預覽...`);
       await page.screenshot({
         path: './page.jpg'
       });
       await pp.browser.close();
-      log.info(`浏览器已关闭。bye`);
+      log.info(`哦了，浏览器已关闭。bye`);
     }, 2000);
   }
 }
 
 new DrawPageStructure({
-  entry: 'https://famanoder.com'
+  entry: 'https://baidu.com/'
 }).start();

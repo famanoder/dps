@@ -119,7 +119,8 @@ async function evalScripts() {
                     top: hPercent(rect.top), 
                     left: wPercent(rect.left),
                     radius: getStyle(node, 'border-radius')
-                  });console.log(node)
+                  });
+                  console.log(node);
                 }
             }
           }
@@ -130,7 +131,7 @@ async function evalScripts() {
       return this.showBlocks();
     }
   }
-  // return new Promise((resolve, reject) => {   
+  return new Promise((resolve, reject) => {   
     setTimeout(function() {
       const html = new DrawPageframe({
         includeElement: function(node, draw) {
@@ -149,9 +150,8 @@ async function evalScripts() {
           } 
         }
       }).startDraw();
-      console.log(html);
-      // resolve(html);
+      resolve(html);
     }, 300);
-  // }); 
+  }); 
 
 }
