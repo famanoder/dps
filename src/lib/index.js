@@ -24,6 +24,9 @@ class DrawPageStructure {
     
     log.info(`正在生成骨架屏...`);
     setTimeout(async () => {
+      await page.screenshot({
+        path: './page.jpg'
+      });
       const html = await page.evaluate(evalScripts);
       log.info(html);
 
@@ -36,15 +39,13 @@ class DrawPageStructure {
         }
       });
       log.info(`正在截圖預覽...`);
-      await page.screenshot({
-        path: './page.jpg'
-      });
+      
       await pp.browser.close();
       log.info(`哦了，浏览器已关闭。bye`);
-    }, 2000);
+    }, 5000);
   }
 }
 
 new DrawPageStructure({
-  entry: 'https://baidu.com/'
+  entry: 'https://www.baidu.com/'
 }).start();
