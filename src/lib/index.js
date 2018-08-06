@@ -23,7 +23,7 @@ class DrawPageStructure {
     const page = await pp.openPage(pageUrl);
     
     log.info(`正在生成骨架屏...`);
-    setTimeout(async () => {
+    // setTimeout(async () => {
       await page.screenshot({
         path: './page.jpg'
       });
@@ -42,10 +42,10 @@ class DrawPageStructure {
       
       await pp.browser.close();
       log.info(`哦了，浏览器已关闭。bye`);
-    }, 5000);
+    // }, 5000);
   }
 }
 
 new DrawPageStructure({
-  entry: 'https://www.baidu.com/'
+  entry: 'https://www.jianshu.com/'
 }).start();
