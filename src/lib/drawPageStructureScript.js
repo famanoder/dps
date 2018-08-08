@@ -116,11 +116,15 @@ async function evalScripts() {
                 let { top: t, left: l, width: w, height: h } = rect;
                 
                 if(w > 0 && h > 0 && l >= 0 && l < win_w && t < win_h - 100 && t >= 0 && h < win_h/2) {
+                  let paddingTop = parseInt(getStyle(node, 'paddingTop'));
+                  let paddingLeft = parseInt(getStyle(node, 'paddingLeft'));
+                  let paddingBottom = parseInt(getStyle(node, 'paddingBottom'));
+                  let paddingRight = parseInt(getStyle(node, 'paddingRight'));
                   drawBlock({
-                    width: wPercent(rect.width), 
-                    height: hPercent(rect.height), 
-                    top: hPercent(rect.top), 
-                    left: wPercent(rect.left),
+                    width: wPercent(rect.width - paddingLeft - paddingRight), 
+                    height: hPercent(rect.height - paddingTop - paddingBottom), 
+                    top: hPercent(rect.top + paddingTop), 
+                    left: wPercent(rect.left + paddingLeft),
                     radius: getStyle(node, 'border-radius')
                   });
                   console.log(node);
@@ -154,7 +158,7 @@ async function evalScripts() {
         },
         beforeDraw: function() {
           let modal = document.querySelector('.modal');
-          modal.parentNode.removeChild(modal);
+          modal && modal.parentNode.removeChild(modal);
         }
       }).startDraw();
       resolve(html);
