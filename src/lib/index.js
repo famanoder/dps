@@ -65,5 +65,5 @@ class DrawPageStructure {
 }
 
 new DrawPageStructure({
-  entry: 'https://www.jianshu.com/'
+  entry: 'https://www.baidu.com/'
 }).start();

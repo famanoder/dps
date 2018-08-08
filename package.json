@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "a way to make skeleton screen",
   "main": "src/lib/index.js",
+  "scripts": {
+    "start": "node src/lib/index.js"
+  },
   "repository": "git@github.com:famanoder/DrawPageStructure.git",
   "author": "famanoder",
   "license": "MIT",
