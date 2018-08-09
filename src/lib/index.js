@@ -17,7 +17,7 @@ class DrawPageStructure {
       drawPageStructure
     } = {}) {
       this.url = url;
-      this.filepath = output.filepath || '';
+      this.filepath = path.resolve(__dirname, output.filepath || '');
       this.injectSelector = output.injectSelector || '#app';
       this.device = device;
       this.headless = headless;
@@ -26,7 +26,7 @@ class DrawPageStructure {
       if(!url) {
         log.error('please provide entry url !', 1); 
       }
-      if(!this.filepath) {
+      if(!output.filepath) {
         log.error('please provide output filepath !', 1); 
       }
   }
@@ -38,9 +38,7 @@ class DrawPageStructure {
 
   }
   writeToFilepath(html) {
-    console.log(html);
-    let filepath = path.resolve(__dirname, this.filepath);
-    console.log(filepath)
+    let filepath = this.filepath;
     let fileHTML = fs.readFileSync(filepath);
     let $ = cheerio.load(fileHTML);
     $(this.injectSelector).html(html);
@@ -75,13 +73,13 @@ class DrawPageStructure {
     const html = await this.generateSkeletonHTML(page);
 
     if(getAgrType(this.drawPageStructure) === 'function') {
-      // drawPageStructure(html,);
+      drawPageStructure(fs.writeFileSync, filepath, html);
     }else{
       this.writeToFilepath(html);
     }
     
     spinner.text = '浏览器已关闭.';
-    spinner.text = `skeleton screen has created base on ${pageUrl}`;
+    spinner.text = `skeleton screen has created in ${this.filepath}`;
     await pp.browser.close();
     console.log(`\n%s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
     spinner.stop();
