@@ -28,8 +28,7 @@ async function evalScripts() {
     this.rootNode = opts.rootNode || document.body;
     this.offsetTop = opts.offsetTop || 0;
     this.includeElement = opts.includeElement;
-    this.excludeElement = opts.ignoreElement;
-    this.beforeDraw = opts.beforeDraw;
+    this.init = opts.init;
     return this instanceof DrawPageframe? this: new DrawPageframe(opts); 
   }
 
@@ -57,7 +56,7 @@ async function evalScripts() {
 
   DrawPageframe.prototype = {
     resetDOM: function() {
-      this.beforeDraw && this.beforeDraw();
+      this.init && this.init();
       window.scrollTo(0, this.offsetTop);
       drawBlock({
         width: 100, 
@@ -156,7 +155,7 @@ async function evalScripts() {
             });return false;
           } 
         },
-        beforeDraw: function() {
+        init: function() {
           let modal = document.querySelector('.modal');
           modal && modal.parentNode.removeChild(modal);
         }
