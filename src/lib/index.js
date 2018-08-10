@@ -1,12 +1,12 @@
-const { log, getAgrType } = require('./utils');
-const ppteer = require('./pp');
-const evalScripts = require('./drawPageStructureScript');
 const fs = require('fs');
 const chalk = require('chalk');
 const cheerio = require('cheerio');
 const path = require('path');
 const ora = require('ora');
-const emoji = require('node-emoji');
+
+const { log, getAgrType, Spinner, emoji } = require('./utils');
+const ppteer = require('./pp');
+const evalScripts = require('./drawPageStructureScript');
 
 class DrawPageStructure {
   constructor({
@@ -14,14 +14,18 @@ class DrawPageStructure {
       output = {},
       device,
       headless,
-      drawPageStructure
+      writePageStructure,
+      includeElement,
+      init
     } = {}) {
       this.url = url;
       this.filepath = path.resolve(__dirname, output.filepath || '');
       this.injectSelector = output.injectSelector || '#app';
       this.device = device;
       this.headless = headless;
-      this.drawPageStructure = drawPageStructure;
+      this.writePageStructure = writePageStructure;
+      this.includeElement = includeElement || '';
+      this.init = init || '';
 
       if(!url) {
         log.error('please provide entry url !', 1); 
@@ -31,8 +35,13 @@ class DrawPageStructure {
       }
   }
   async generateSkeletonHTML(page) {
+    let html = '';
 
-    const html = await page.evaluate(evalScripts);
+    try{
+      html = await page.evaluate.call(page, evalScripts, this.init.toString(), this.includeElement.toString());
+    }catch(e){
+      log.error('\n[page.evaluate] ' + e.message, 1);
+    }
     
     return html;
 
@@ -46,19 +55,7 @@ class DrawPageStructure {
   }
   async start() {
     const pageUrl = this.url;
-    const spinner = ora({
-      spinner: {
-        "interval": 125,
-        "frames": [
-          "∙∙∙",
-          "●∙∙",
-          "∙●∙",
-          "∙∙●",
-          "∙∙∙"
-        ]
-      }
-    }).start();
-    spinner.color = 'magentaBright';
+    const spinner = Spinner('magentaBright');
 
 	  spinner.text = '启动浏览器...';
     const pp = await ppteer({
@@ -72,17 +69,18 @@ class DrawPageStructure {
     spinner.text = '正在生成骨架屏...';
     const html = await this.generateSkeletonHTML(page);
 
-    if(getAgrType(this.drawPageStructure) === 'function') {
-      drawPageStructure(fs.writeFileSync, filepath, html);
+    if(getAgrType(this.writePageStructure) === 'function') {
+      writePageStructure(fs.writeFileSync, filepath, html);
     }else{
       this.writeToFilepath(html);
     }
     
     spinner.text = '浏览器已关闭.';
     spinner.text = `skeleton screen has created in ${this.filepath}`;
-    await pp.browser.close();
-    console.log(`\n%s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
+    // await pp.browser.close();
+    console.log(`\n %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
     spinner.stop();
+    process.exit(0);
   }
 }
 
@@ -100,7 +98,25 @@ new DrawPageStructure({
     filepath: '../../example/index.html',
     injectSelector: '#app'
   },
-  headless: true
+  headless: false,
+  includeElement: function(node, draw) {
+    if(node.id == 'weather') {
+      return false;
+    }
+    // if(node.tagName.toLowerCase()=='img') {
+    //   draw({
+    //     width: 100,
+    //     height: 8,
+    //     left: 0,
+    //     top: 0,
+    //     zIndex: 99999999,
+    //     background: '#F63515'
+    //   });return false;
+    // } 
+  },
+  init: function() {
+    document.title = '123';
+  }
 }).start();
 
 

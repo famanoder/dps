@@ -1,6 +1,6 @@
-module.exports = evalScripts;
+module.exports = function() {
 
-async function evalScripts() {
+  const option = parseParams(arguments);
   const blocks = [];
   function drawBlock({width, height, top, left, zIndex = 9999999, background = '#eee', radius} = {}) {
     const styles = [
@@ -29,6 +29,7 @@ async function evalScripts() {
     this.offsetTop = opts.offsetTop || 0;
     this.includeElement = opts.includeElement;
     this.init = opts.init;
+
     return this instanceof DrawPageframe? this: new DrawPageframe(opts); 
   }
 
@@ -88,7 +89,7 @@ async function evalScripts() {
           for(let i = 0; i < nodes.length; i++) {
 
             let node = nodes[i];
-            if(isHideStyle(node) || $this.includeElement(node, drawBlock) == false) continue;
+            if(isHideStyle(node) || (getArgtype($this.includeElement) === 'function' && $this.includeElement(node, drawBlock) == false)) continue;
             let childNodes = node.childNodes;
             let hasChildText = false;
             let background = getStyle(node, 'backgroundImage');
@@ -137,28 +138,24 @@ async function evalScripts() {
       return this.showBlocks();
     }
   }
-  return new Promise((resolve, reject) => {   
-    setTimeout(function() {
-      const html = new DrawPageframe({
-        includeElement: function(node, draw) {
-          if(node.id == 'weather') {
-            return false;
-          }
-          if(node.tagName.toLowerCase()=='header') {
-            draw({
-              width: 100,
-              height: 8,
-              left: 0,
-              top: 0,
-              zIndex: 99999999,
-              background: '#F63515'
-            });return false;
-          } 
-        },
-        init: function() {
-          let modal = document.querySelector('.modal');
-          modal && modal.parentNode.removeChild(modal);
+
+  function parseParams(params) {
+    let options = [];
+    if(params.length) {
+      for(let i in [0, 1]) {
+        let fn = eval('(' + params[i] + ')');
+        if(fn) {
+          options[i] = fn;
         }
+      }
+    }
+    return options;
+  }
+  return new Promise((resolve, reject) => {   
+    setTimeout(() => {
+      const html = new DrawPageframe({
+        init: option[0],
+        includeElement: option[1]
       }).startDraw();
       resolve(html);
     }, 300);
