@@ -3,7 +3,7 @@ const chalk = require('chalk');
 const cheerio = require('cheerio');
 const path = require('path');
 const ora = require('ora');
-
+const drawPageConfig = require('../../drawPageConfig');
 const { log, getAgrType, Spinner, emoji } = require('./utils');
 const ppteer = require('./pp');
 const evalScripts = require('./drawPageStructureScript');
@@ -92,32 +92,7 @@ module.exports = DrawPageStructure;
 //   headless: true
 // }).start();
 
-new DrawPageStructure({
-  url: 'http://localhost:8080',
-  output: {
-    filepath: '../../example/index.html',
-    injectSelector: '#app'
-  },
-  headless: false,
-  includeElement: function(node, draw) {
-    if(node.id == 'weather') {
-      return false;
-    }
-    // if(node.tagName.toLowerCase()=='img') {
-    //   draw({
-    //     width: 100,
-    //     height: 8,
-    //     left: 0,
-    //     top: 0,
-    //     zIndex: 99999999,
-    //     background: '#F63515'
-    //   });return false;
-    // } 
-  },
-  init: function() {
-    document.title = '123';
-  }
-}).start();
+new DrawPageStructure(drawPageConfig || {}).start();
 
 
 /**
