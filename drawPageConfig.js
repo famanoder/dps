@@ -1,10 +1,9 @@
 module.exports = {
 	url: 'http://localhost:8080',
 	output: {
-		filepath: '../../example/index.html',
+		filepath: require('path').resolve(__dirname, '../carefree/example/index.html'),
 		injectSelector: '#app'
 	},
-	headless: false,
 	includeElement: function(node, draw) {
 		if(node.id == 'weather') {
 			return false;

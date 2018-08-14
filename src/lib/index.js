@@ -1,7 +1,6 @@
 const fs = require('fs');
 const chalk = require('chalk');
 const cheerio = require('cheerio');
-const path = require('path');
 const ora = require('ora');
 const drawPageConfig = require('../../drawPageConfig');
 const { log, getAgrType, Spinner, emoji } = require('./utils');
@@ -19,7 +18,7 @@ class DrawPageStructure {
       init
     } = {}) {
       this.url = url;
-      this.filepath = path.resolve(__dirname, output.filepath || '');
+      this.filepath = output.filepath || '/';
       this.injectSelector = output.injectSelector || '#app';
       this.device = device;
       this.headless = headless;
@@ -32,6 +31,9 @@ class DrawPageStructure {
       }
       if(!output.filepath) {
         log.error('please provide output filepath !', 1); 
+      }
+      if(!fs.existsSync(output.filepath)) {
+        log.error('please provide the absolute filepath !', 1); 
       }
   }
   async generateSkeletonHTML(page) {
@@ -70,15 +72,13 @@ class DrawPageStructure {
     const html = await this.generateSkeletonHTML(page);
 
     if(getAgrType(this.writePageStructure) === 'function') {
-      writePageStructure(fs.writeFileSync, filepath, html);
+      this.writePageStructure(html, filepath);
     }else{
       this.writeToFilepath(html);
     }
-    
-    spinner.text = '浏览器已关闭.';
-    spinner.text = `skeleton screen has created in ${this.filepath}`;
-    // await pp.browser.close();
-    console.log(`\n %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
+    await pp.browser.close();
+    console.log('\n %s ', chalk.green(emoji.get('heavy_check_mark')), `skeleton screen has created in ${this.filepath}`);
+    console.log(` %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
     spinner.stop();
     process.exit(0);
   }
