@@ -3,11 +3,12 @@ a way to make skeleton screen
 
 ### usage
 1. git clone http://git.jd.com/hufeng10/DrawPageStructure.git
-2. 修改`drawPageConfig.js`
-3. `npm start`
-4. 对于DOM结构比较复杂和图片比较多且分布密集的情况，生成的骨架屏效果可能不尽如人意，
-    这时候可以使用includeElement定制某个节点生成生成什么样子，或者使用init在生成
-    骨架屏之前对DOM节点进行调整，比如删除干扰节点；
+2. `cd DrawPageStructure && npm i`
+2. 运行demo，`npm run example`
+3. 开始生成骨架屏，`npm start`
+4. 可修改`drawPageConfig.js`进行相关配置，对于DOM结构比较复杂和图片比较多且分布密集的情况，
+    生成的骨架屏效果可能不尽如人意，这时候可以使用includeElement定制某个节点生成生成什么样
+    子，或者使用init在生成骨架屏之前对DOM节点进行调整，比如删除干扰节点；
 
 ### 参数说明
 | 参数 | 说明 | 默认值 | 是否必填
@@ -18,3 +19,4 @@ a way to make skeleton screen
 | init | 开始生成之前的操作 | -- | 否
 | includeElement(node, draw) | 定制某个节点如何生成 | -- | 否
 | writePageStructure(html, filepath) | 回调的骨架屏节点 | -- | 否
+| device | 设备类型 | mobile | 否
