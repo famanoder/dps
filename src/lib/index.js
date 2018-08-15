@@ -72,7 +72,7 @@ class DrawPageStructure {
     const html = await this.generateSkeletonHTML(page);
 
     if(getAgrType(this.writePageStructure) === 'function') {
-      this.writePageStructure(html, filepath);
+      this.writePageStructure(html, this.filepath);
     }else{
       this.writeToFilepath(html);
     }
