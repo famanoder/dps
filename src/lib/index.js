@@ -11,6 +11,7 @@ class DrawPageStructure {
   constructor({
       url,
       output = {},
+      background = '#ecf0f2',
       device,
       headless,
       writePageStructure,
@@ -18,8 +19,9 @@ class DrawPageStructure {
       init
     } = {}) {
       this.url = url;
-      this.filepath = output.filepath || '/';
+      this.filepath = output.filepath;
       this.injectSelector = output.injectSelector || '#app';
+      this.background = background;
       this.device = device;
       this.headless = headless;
       this.writePageStructure = writePageStructure;
@@ -40,7 +42,7 @@ class DrawPageStructure {
     let html = '';
 
     try{
-      html = await page.evaluate.call(page, evalScripts, this.init.toString(), this.includeElement.toString());
+      html = await page.evaluate.call(page, evalScripts, this.init.toString(), this.includeElement.toString(), this.background);
     }catch(e){
       log.error('\n[page.evaluate] ' + e.message, 1);
     }
@@ -73,13 +75,16 @@ class DrawPageStructure {
 
     if(getAgrType(this.writePageStructure) === 'function') {
       this.writePageStructure(html, this.filepath);
-    }else{
+    }
+    if(this.filepath) {
       this.writeToFilepath(html);
     }
-    await pp.browser.close();
-    console.log('\n %s ', chalk.green(emoji.get('heavy_check_mark')), `skeleton screen has created in ${this.filepath}`);
-    console.log(` %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
+
+    console.log('');
     spinner.stop();
+    await pp.browser.close();
+    console.log(' %s ', chalk.green(emoji.get('heavy_check_mark')), `skeleton screen has created in ${this.filepath}`);
+    console.log(` %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
     process.exit(0);
   }
 }

@@ -2,7 +2,8 @@ module.exports = function() {
 
   const option = parseParams(arguments);
   const blocks = [];
-  function drawBlock({width, height, top, left, zIndex = 9999999, background = '#eee', radius} = {}) {
+  let backgroundColor = option[2];
+  function drawBlock({width, height, top, left, zIndex = 9999999, background, radius} = {}) {
     const styles = [
       'position: fixed',
       'z-index: '+zIndex,
@@ -10,7 +11,7 @@ module.exports = function() {
       'left: '+left+'%',
       'width: '+width+'%',
       'height: '+height+'%',
-      'background: '+background,
+      'background: '+(background || backgroundColor),
       'border-radius: '+radius
     ].join(';');
     blocks.push(`<div style="${styles}"></div>`);
@@ -21,7 +22,7 @@ module.exports = function() {
   }
 
   function getStyle(node, attr) {
-    return node.nodeType === 1? getComputedStyle(node)[attr]: '';
+    return (node.nodeType === 1? getComputedStyle(node)[attr]: '') || '0px';
   }
 
   function DrawPageframe(opts) {
@@ -148,6 +149,7 @@ module.exports = function() {
           options[i] = fn;
         }
       }
+      options[2] = params[2];
     }
     return options;
   }
