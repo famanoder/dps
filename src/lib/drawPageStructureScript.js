@@ -3,6 +3,8 @@ module.exports = function() {
   const option = parseParams(arguments);
   const blocks = [];
   let backgroundColor = option[2];
+  let animation = option[3];
+  
   function drawBlock({width, height, top, left, zIndex = 9999999, background, radius} = {}) {
     const styles = [
       'position: fixed',
@@ -11,10 +13,11 @@ module.exports = function() {
       'left: '+left+'%',
       'width: '+width+'%',
       'height: '+height+'%',
-      'background: '+(background || backgroundColor),
-      'border-radius: '+radius
-    ].join(';');
-    blocks.push(`<div style="${styles}"></div>`);
+      'background: '+(background || backgroundColor)
+    ];
+    radius && radius != '0px' && styles.push('border-radius: '+radius);
+    animation && styles.push('animation: '+animation);
+    blocks.push(`<div style="${styles.join(';')}"></div>`);
   }
 
   function getArgtype(arg){
@@ -22,7 +25,7 @@ module.exports = function() {
   }
 
   function getStyle(node, attr) {
-    return (node.nodeType === 1? getComputedStyle(node)[attr]: '') || '0px';
+    return (node.nodeType === 1? getComputedStyle(node)[attr]: '') || '';
   }
 
   function DrawPageframe(opts) {
@@ -150,6 +153,7 @@ module.exports = function() {
         }
       }
       options[2] = params[2];
+      options[3] = params[3];
     }
     return options;
   }

@@ -1,10 +1,11 @@
 module.exports = {
-	url: 'http://baidu.com',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
+	url: 'http://jdtech.jd.com/m#/',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
 	output: {
 		filepath: require('path').resolve(__dirname, './example/index.html'),   // 生成骨架屏的存放页面，一般为项目的入口页面
 		injectSelector: '#app'  // 生成的骨架屏插入页面的节点
 	},
 	// background: '#eee',
+	animation: 'opacity 1s linear infinite;',
 	includeElement: function(node, draw) {
 		// 定制某个节点画出来的样子，带上return false
 		// if(node.id == 'weather') {

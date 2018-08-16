@@ -5,7 +5,8 @@
   "main": "src/lib/index.js",
   "scripts": {
     "example": "cd example && npm i && npm run dev",
-    "start": "node src/lib/index.js"
+    "start": "node src/lib/index.js",
+    "ppt": "nodeppt start -d drawPageStructure.nodeppt -p 8992 -w"
   },
   "repository": "git@github.com:famanoder/DrawPageStructure.git",
   "author": "famanoder",

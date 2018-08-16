@@ -12,6 +12,7 @@ class DrawPageStructure {
       url,
       output = {},
       background = '#ecf0f2',
+      animation,
       device,
       headless,
       writePageStructure,
@@ -22,6 +23,7 @@ class DrawPageStructure {
       this.filepath = output.filepath;
       this.injectSelector = output.injectSelector || '#app';
       this.background = background;
+      this.animation = animation || '';
       this.device = device;
       this.headless = headless;
       this.writePageStructure = writePageStructure;
@@ -42,7 +44,7 @@ class DrawPageStructure {
     let html = '';
 
     try{
-      html = await page.evaluate.call(page, evalScripts, this.init.toString(), this.includeElement.toString(), this.background);
+      html = await page.evaluate.call(page, evalScripts, this.init.toString(), this.includeElement.toString(), this.background, this.animation);
     }catch(e){
       log.error('\n[page.evaluate] ' + e.message, 1);
     }
