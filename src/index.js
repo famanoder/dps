@@ -2,10 +2,10 @@ const fs = require('fs');
 const chalk = require('chalk');
 const cheerio = require('cheerio');
 const ora = require('ora');
-const drawPageConfig = require('../../drawPageConfig');
+const drawPageConfig = require('../drawPageConfig');
 const { log, getAgrType, Spinner, emoji } = require('./utils');
 const ppteer = require('./pp');
-const evalScripts = require('./drawPageStructureScript');
+const evalScripts = require('../evalDOM');
 
 class DrawPageStructure {
   constructor({

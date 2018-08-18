@@ -1,10 +1,25 @@
 module.exports = function() {
-
-  const option = parseParams(arguments);
-  const blocks = [];
-  let backgroundColor = option[2];
-  let animation = option[3];
+  const agrs = arguments;
+  let agrs0 = agrs[0];
   
+  let option = [];
+  let backgroundColor;
+  let animation;
+
+  if(agrs.length === 1 && getArgtype(agrs0) === 'object') {
+    option = [
+      getArgtype(agrs0.init) === 'function'? agrs0.init: noop,
+      getArgtype(agrs0.includeElement) === 'function'? agrs0.includeElement: noop,
+      agrs0.background || '#ecf0f2',
+      agrs0.animation
+    ];
+  }else{
+    option = parseParams(arguments);
+  }
+  backgroundColor = option[2];
+  animation = option[3];
+
+  const blocks = [];
   function drawBlock({width, height, top, left, zIndex = 9999999, background, radius} = {}) {
     const styles = [
       'position: fixed',
@@ -19,6 +34,8 @@ module.exports = function() {
     animation && styles.push('animation: '+animation);
     blocks.push(`<div style="${styles.join(';')}"></div>`);
   }
+
+  function noop() {}
 
   function getArgtype(arg){
     return Object.prototype.toString.call(arg).toLowerCase().match(/\s(\w+)/)[1];
@@ -131,7 +148,6 @@ module.exports = function() {
                     left: wPercent(rect.left + paddingLeft),
                     radius: getStyle(node, 'border-radius')
                   });
-                  console.log(node);
                 }
             }
           }
@@ -159,11 +175,15 @@ module.exports = function() {
   }
   return new Promise((resolve, reject) => {   
     setTimeout(() => {
-      const html = new DrawPageframe({
-        init: option[0],
-        includeElement: option[1]
-      }).startDraw();
-      resolve(html);
+      try{
+        const html = new DrawPageframe({
+          init: option[0],
+          includeElement: option[1]
+        }).startDraw();
+        resolve(html);
+      }catch(e) {
+        reject(e);
+      }
     }, 300);
   }); 
 

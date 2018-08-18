@@ -2,10 +2,10 @@
   "name": "draw-page-structure",
   "version": "0.0.1",
   "description": "a way to make skeleton screen",
-  "main": "src/lib/index.js",
+  "main": "src/index.js",
   "scripts": {
     "example": "cd example && npm i && npm run dev",
-    "start": "node src/lib/index.js",
+    "start": "node src/index.js",
     "ppt": "nodeppt start -d drawPageStructure.nodeppt -p 8992 -w"
   },
   "repository": "git@github.com:famanoder/DrawPageStructure.git",
