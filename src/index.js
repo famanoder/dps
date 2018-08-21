@@ -7,9 +7,6 @@ const { log, getAgrType, Spinner, emoji, toBase64 } = require('./utils');
 const ppteer = require('./pp');
 const evalScripts = require('../evalDOM');
 
-const hasConf = fs.existsSync(path.resolve(__dirname, '../drawPageConfig.js'));
-const drawPageConfig = hasConf? require('../drawPageConfig'): {};
-
 class DrawPageStructure {
   constructor({
       url,
@@ -96,14 +93,6 @@ class DrawPageStructure {
 }
 
 module.exports = DrawPageStructure;
-// new DrawPageStructure({
-//   // webpack插件的话，可以取webpack传过来的publicPath
-//   publicPath: 'http://page.jd.com',
-//   entry: '../../index.html',
-//   headless: true
-// }).start();
-
-new DrawPageStructure(drawPageConfig || {}).start();
 
 
 /**

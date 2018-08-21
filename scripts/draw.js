@@ -1,12 +1,11 @@
 // 1. 只支持 history 模式的，暂时不支持 hash 模式 。
 // 2. 体积问题
 // 3. 依赖Comments，会被其他插件删除
+const DrawPageStructure = require('../src');
 
 
-
-module.exports = {
-	// 输出格式
-	url: 'http://localhost:8080',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
+const drawConfig = {
+	url: 'http://localhost:8081',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
 	output: {
 		filepath: require('path').resolve(__dirname, './example/index.html'),   // 生成骨架屏的存放页面，一般为项目的入口页面
 		injectSelector: '#app'  // 生成的骨架屏插入页面的节点
@@ -42,3 +41,5 @@ module.exports = {
 		// modal && modal.parentNode.removeChild();
 	}
 }
+
+new DrawPageStructure(drawConfig).start();

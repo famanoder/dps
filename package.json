@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "example": "cd example && npm i && npm run dev",
-    "start": "node src/index.js",
+    "start": "node scripts/draw.js",
     "ppt": "nodeppt start -d drawPageStructure.nodeppt -p 8992 -w"
   },
   "repository": "git@github.com:famanoder/DrawPageStructure.git",
