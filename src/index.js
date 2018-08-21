@@ -1,11 +1,14 @@
 const fs = require('fs');
+const path = require('path');
 const chalk = require('chalk');
 const cheerio = require('cheerio');
 const ora = require('ora');
-const drawPageConfig = require('../drawPageConfig');
 const { log, getAgrType, Spinner, emoji } = require('./utils');
 const ppteer = require('./pp');
 const evalScripts = require('../evalDOM');
+
+const hasConf = fs.existsSync(path.resolve(__dirname, '../drawPageConfig.js'));
+const drawPageConfig = hasConf? require('../drawPageConfig'): {};
 
 class DrawPageStructure {
   constructor({
