@@ -14,7 +14,6 @@ async function pp({device = 'mobile', headless = true}) {
     const page = await browser.newPage();
     try{
       let deviceSet = devices[device];
-      // page.waitForNavigation({timeout: 2000});
       page.setUserAgent(deviceSet[2]);
       page.setViewport({width: deviceSet[0], height: deviceSet[1]});
       await page.goto(url, {

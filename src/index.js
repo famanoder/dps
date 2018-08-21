@@ -3,7 +3,7 @@ const path = require('path');
 const chalk = require('chalk');
 const cheerio = require('cheerio');
 const ora = require('ora');
-const { log, getAgrType, Spinner, emoji } = require('./utils');
+const { log, getAgrType, Spinner, emoji, toBase64 } = require('./utils');
 const ppteer = require('./pp');
 const evalScripts = require('../evalDOM');
 
@@ -51,7 +51,8 @@ class DrawPageStructure {
     }catch(e){
       log.error('\n[page.evaluate] ' + e.message, 1);
     }
-    
+    await page.screenshot({path: 'example.png'});
+    let base64 = fs.readFileSync(path.resolve(__dirname, '../example.png')).toString('base64');
     return html;
 
   }
@@ -87,10 +88,10 @@ class DrawPageStructure {
 
     console.log('');
     spinner.stop();
-    await pp.browser.close();
+    // await pp.browser.close();
     console.log(' %s ', chalk.green(emoji.get('heavy_check_mark')), `skeleton screen has created in ${this.filepath}`);
     console.log(` %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
-    process.exit(0);
+    // process.exit(0);
   }
 }
 

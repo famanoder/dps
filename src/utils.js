@@ -33,3 +33,7 @@ exports.Spinner = function(color) {
 }
 
 exports.emoji = require('node-emoji');
+
+exports.toBase64 = function(str) {
+  return new Buffer(str).toString('base64');
+}

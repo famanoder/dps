@@ -80,6 +80,7 @@ module.exports = function() {
     resetDOM: function() {
       this.init && this.init();
       window.scrollTo(0, this.offsetTop);
+      document.body.style.cssText += 'overflow:hidden!important;';
       drawBlock({
         width: 100, 
         height: 100, 
