@@ -1,0 +1,1 @@
+slides>slide{transition:none !important;transform-origin:0 0 !important}slides>slide[data-transition].current,slides>slide[data-transition].next,slides>slide[data-transition].past{transition:none;transform-origin:0 0;animation-name:none}

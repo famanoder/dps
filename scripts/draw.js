@@ -1,16 +1,13 @@
-// 1. 只支持 history 模式的，暂时不支持 hash 模式 。
-// 2. 体积问题
-// 3. 依赖Comments，会被其他插件删除
+
 const DrawPageStructure = require('../src');
 
 
 const drawConfig = {
-	url: 'http://localhost:8081',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
+	url: 'http://jdtech.jd.com/m',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
 	output: {
-		filepath: require('path').resolve(__dirname, './example/index.html'),   // 生成骨架屏的存放页面，一般为项目的入口页面
+		filepath: require('path').resolve(__dirname, '../example/index.html'),   // 生成骨架屏的存放页面，一般为项目的入口页面
 		injectSelector: '#app'  // 生成的骨架屏插入页面的节点
 	},
-	headless: false,
 	// background: '#eee',
 	animation: 'opacity 1s linear infinite;',
 	includeElement: function(node, draw) {

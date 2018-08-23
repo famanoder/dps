@@ -1,0 +1,282 @@
+<!--
+    Powered By nodeppt - This is probably the best web presentation tool so far!
+    version: 1.4.5
+    site: https://github.com/ksky521/nodeppt
+    date: 
+-->
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>骨架屏自动生成方案 演示 - By 胡峰</title>
+    <link rel="stylesheet" media="all" href="./css/nodeppt.css">
+    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="./css/phone.css">
+    
+    <link rel="stylesheet" href="./js/highlight/styles/monokai_sublime.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+    
+<link rel="stylesheet" href="./css/theme.moon.css">
+</head>
+<body>
+<div class="slides">
+    <slides id="container">
+        <slide class="slide"><section class="slide-wrapper"><article>
+<p><h1 style="color: #25e0b5;">DrawPageStructure</h1></p>
+<h2 style="font-size: 32px;">用纯DOM的方式结合Puppeteer自动生成网页骨架屏</h2>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>背景</h2>
+<div style="font-size: 24px;
+    text-indent: 2em;
+    text-align: justify;
+    line-height: 1.7;
+    margin-bottom: 20px;">骨架屏是在页面数据尚未加载完成前先给用户展示出页面的大致结构，直到请求数据返回后再显示真正的页面内容；
+随着单页应用（SPA）的越来越流行，单页应用的用户体验也越来越得到前端开发者的关注；为了优化用户体验，在数据到达用户之前，往往会在页面上加上loading的效果，而现在，越来越多的场景倾向于使用页面的骨架替代单一的loading效果；</div>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<img src="http://img10.360buyimg.com/uba/jfs/t23884/217/2383255782/3261/30838b97/5b7e6be6Nd6620287.png" width=320>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>为什么需要自动生成骨架屏？</h2>
+<ul class="rollIn">
+<li>提高效率，节约单独编写骨架屏代码的时间</li>
+<li>替换原来单一的loading图片效果</li>
+<li>可以优化用户体验，在页面数据尚未加载完成前<br>先给用户展示出页面的大致结构，配合动画效果，<br>给用户一种平滑切换的感觉</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>常见的方案</h2>
+<ol class="rollIn">
+<li>手动编写骨架屏代码</li>
+<li>通过预渲染手动书写的代码生成相应的骨架屏
+<br>比如：vue-skeleton-webpack-plugin</li>
+<li>饿了么内部的生成骨架页面的工具
+<br>page-skeleton-webpack-plugin</li>
+<li>...</li>
+</ol>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<ul>
+<li>前两者的前提都是需要开发者自己编写骨架屏代码</li>
+<li>饿了么的做的比较强大了，还有UI界面专门调整骨架屏<ul>
+<li>对于复杂的页面也会有不尽如人意的地方</li>
+<li>生成的骨架屏节点是基于页面本身的结构和CSS，存在嵌套比较深的情况，体积不会太小</li>
+<li>只支持history模式</li>
+</ul>
+</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>为什么我们也自己开发一个骨架屏生成工具？</h2>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>因为，我们不一样！</h2>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>我们的方案</h2>
+<img src="./img/structure.png" style="height:400px;border-radius:8px;margin-top:30px;" />
+<p>用纯DOM的方式结合Puppeteer自动生成网页骨架屏</p>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h3>编写操作DOM的Javascript脚本</h3>
+<ul class="rollIn">
+<li><p>遍历可见区域可见的DOM节点<br>
+包括：非隐藏元素、宽高大于0的元素、非透明元素、内容不是空格的元素、位于浏览窗口可见区域内的元素</p>
+</li>
+<li><p>针对（背景）图片、文字、表单项、音频视频等区域，算出其所占区域的宽、高、距离视口的绝对距离等信息</p>
+</li>
+<li>对于符合生成条件的区域，一视同仁，生成相应区域的颜色块</li>
+<li>“一视同仁”即对于符合条件的区域，不区分具体元素，不用考虑结构层级，不考虑样式，统一生成div的颜色块</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>编写操作DOM的Javascript脚本</h2>
+<ul class="rollIn">
+<li>该脚本的运行环境决定了获取到的元素尺寸与相关距离单位不可控，可能需要做转换，比如用的rem、em、vh等；我们采用比较简单的方式，不取style的尺寸相关的值，而是通过getBoundingClientRect获取宽、高、距离视口距离的绝对值，与当前设备的宽高，计算出相应的百分比作为颜色块的单位，这样来适配不同设备</li>
+<li>对于页面结构比较复杂或者大图片比较多的页面，会出现不尽如人意的地方，我们通过includeElement(node, draw)和init两个钩子函数来支持自定义的微调</li>
+<li>以上就能够直接跑在浏览器生成骨架屏代码了</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>在浏览器内运行，手动添加到应用页面</h2>
+
+</hgroup><article>
+
+<pre><code class="javascript">const createSkeletonHTML = require(&#39;DrawPageStructure/evalDOM&#39;)
+
+    createSkeletonHTML({
+        // ...
+        background: &#39;red&#39;,
+        animation: &#39;opacity 1s linear infinite;&#39;
+    }).then(skeletonHTML =&gt; {
+        console.log(skeletonHTML)
+    }).catch(e =&gt; {
+        console.error(e)
+    })
+</code></pre>
+<ul class="rollIn">
+<li>直接在浏览器端运行，在控制台打印当前页面骨架屏节点，复制添加到应用页面</li>
+<li>该方式不够自动化，我们该让骨架屏自动生成并添加到应用页面</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>Puppeteer</h2>
+
+</hgroup><article>
+
+<blockquote>
+<p>Puppeteer是谷歌官方出品的一个可以控制headless Chrome的Node库。<br>
+可以通过Puppeteer的提供的api直接控制Chrome模拟大部分用户操作来<br>进行UI Test或者作为爬虫访问页面来收集数据。</p>
+</blockquote>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h3>使用Puppeteer的小例子</h3>
+
+</hgroup><article>
+
+<pre><code class="javascript">const puppeteer = require(&#39;puppeteer&#39;);
+
+(async () =&gt; {
+
+  // 获取一个浏览器实例
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  // 打开一个页面，waitUntil对做爬虫时爬取单页应用比较好用
+  await page.goto(&#39;https://jd.com&#39;, {waitUntil: &#39;networkidle2&#39;});  
+
+  await page.screenshot({path: &#39;jd.png&#39;});           // 网页截图
+  await page.pdf({path: &#39;jd.pdf&#39;, format: &#39;A4&#39;});    // 生成PDF
+
+  await browser.close();
+})();
+</code></pre>
+<h3>就是这么简洁而强大！</h3>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>Puppeteer提供运行环境和导出方式</h2>
+<ol>
+<li>使用puppeteer运行需要生成骨架屏的页面</li>
+<li>将之前编写的Javascript脚本通过puppeteer提前注入到该页面，<br>这样即可运行该脚本，并生成骨架屏所需的DOM节点</li>
+<li>将自动生成的骨架屏DOM片段插入到应用页面的入口节点</li>
+</ol>
+
+</hgroup><article>
+
+<pre><code class="javascript">const evalDOM = require(&#39;../evalDOM&#39;);
+
+await page.goto(url, {waitUntil: &#39;networkidle0&#39;});
+const skeletonHTML = await page.evaluate.call(page, evalDOM, ...args);
+</code></pre>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>小结</h2>
+<ol class="rollIn">
+<li>核心在于DOM操作，puppeteer仅提供运行环境和导出方式</li>
+<li>只要能访问的页面都能生成，history与hash模式无限制</li>
+<li>不受项目和框架的限制，vue和react等项目零修改即可复用</li>
+<li>生成色块的单位为百分比，不同设备自适应</li>
+<li>不需要css-tree来提取样式，不依赖页面本身的布局结构，生成扁平的DOM节点体积特别小</li>
+<li>支持自定义生成方式与导出方式</li>
+</ol>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<ul>
+<li>还有很多细节优化中，多路由支持也在规划中</li>
+<li>我们的目标是：简单、灵活、可控</li>
+<li>欢迎感兴趣的小伙伴一起加入！
+<a style="color: #F5BE78;font-size: 20px;" href="http://git.jd.com/hufeng10/DrawPageStructure.git">http://git.jd.com/hufeng10/DrawPageStructure.git</a></li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>Thank you!</h1>
+
+</article></section></slide>
+        
+
+        <!-- <slide class="slide logoslide dark nobackground">
+            <article class="flexbox vcenter">
+                <h2 style="color: white;">Powered By nodeppt v1.4.5</h2>
+            </article>
+        </slide> -->
+        <div class="slideTip" id="tip"></div>
+    </slides>
+</div>
+<canvas id="drawBoard" class="draw-board" width="900" height="700"></canvas>
+<div class="progress"><span id="progress"></span></div>
+<div id="_buttons">
+    <div class="_btn-box" id="_btn-box" style="display:none;">
+        <button class="fa fa-arrow-circle-left" id="_btn-prev"></button>
+        <button class="fa fa-arrow-circle-right" id="_btn-next"></button>
+        <button class="fa fa-paint-brush" id="_btn-brush"></button>
+        <button class="fa fa-compress" id="_btn-overview" data-toggle="fa fa-expand"></button>
+    </div>
+    <button class="fa fa-bars" id="_btn-bar"  data-toggle="fa fa-close"></button>
+</div>
+<script src="./js/mixjs/lib/mix.0.3.0.min.js"></script>
+<script>
+    var ASSET_RELATIVE_DIR = ".";
+</script>
+<script>
+var base = location.protocol + '//' + location.host;
+
+var path = (location.pathname + '#').split('/').filter(function(v){
+    return !!v;
+});
+path.pop();
+path = path.join('/');
+if (typeof ASSET_RELATIVE_DIR === 'string') {
+    path = path + '/' + ASSET_RELATIVE_DIR;
+}
+MixJS.config({
+    baseURL: [ base, path, 'js'].join('/')+'/'
+});
+
+</script>
+<script src="./js/mixjs/lib/event/broadcast.js"></script>
+<script src="./js/nodeppt.js"></script>
+<script>
+Slide.init({
+    containerID: 'container',
+    drawBoardID: 'drawBoard',
+    slideClass: '.slide',
+    buildClass: '.build',
+    progressID: 'progress',
+    transition: 'zoomout',
+    width: 1100,
+    dir: './',
+    
+    //打开下面的注释就开启postMessage方式
+    //访问网址127.0.0.1:8080/ppt/demo#client
+    control:{
+        type: 'postMessage',
+        args:{
+            isControl:  false
+        }
+    },
+    
+    tipID: 'tip'
+});
+MixJS.loadJS('highlight/highlight.pack.js',function(){
+    hljs.tabReplace = '  ';
+    hljs.initHighlightingOnLoad();
+});
+</script>
+
+
+<!--placeholder-->
+</body>
+</html>
