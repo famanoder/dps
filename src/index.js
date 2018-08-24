@@ -11,7 +11,7 @@ class DrawPageStructure {
   constructor({
       url,
       output = {},
-      background = '#ecf0f2',
+      background,
       animation,
       device,
       headless,
@@ -25,7 +25,7 @@ class DrawPageStructure {
       this.background = background;
       this.animation = animation || '';
       this.device = device;
-      this.headless = headless;
+      this.headless = false;
       this.writePageStructure = writePageStructure;
       this.includeElement = includeElement || '';
       this.init = init || '';

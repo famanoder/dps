@@ -3,7 +3,7 @@ const DrawPageStructure = require('../src');
 
 
 const drawConfig = {
-	url: 'http://jdtech.jd.com/m',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
+	url: 'https://wq.jd.com/wxportal/index_v6?PTAG=17053.1.1&ptype=1&utm_source=weixin&utm_medium=weixin&utm_campaign=t_1000072672_17053_001',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
 	output: {
 		filepath: require('path').resolve(__dirname, '../example/index.html'),   // 生成骨架屏的存放页面，一般为项目的入口页面
 		injectSelector: '#app'  // 生成的骨架屏插入页面的节点

@@ -1,5 +1,6 @@
-module.exports = function() {
-  const agrs = arguments;
+module.exports = function evalDOM() {
+  let agrs = arguments;
+  if(!agrs.length) agrs = {length: 1, 0: {}};
   let agrs0 = agrs[0];
   
   let option = [];
