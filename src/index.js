@@ -22,10 +22,10 @@ class DrawPageStructure {
       this.url = url;
       this.filepath = output.filepath;
       this.injectSelector = output.injectSelector || '#app';
-      this.background = background;
+      this.background = background || '#ecf0f2';
       this.animation = animation || '';
       this.device = device;
-      this.headless = false;
+      this.headless = headless;
       this.writePageStructure = writePageStructure;
       this.includeElement = includeElement || '';
       this.init = init || '';
@@ -85,10 +85,10 @@ class DrawPageStructure {
 
     console.log('');
     spinner.stop();
-    // await pp.browser.close();
+    await pp.browser.close();
     console.log(' %s ', chalk.green(emoji.get('heavy_check_mark')), `skeleton screen has created in ${this.filepath}`);
     console.log(` %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
-    // process.exit(0);
+    process.exit(0);
   }
 }
 

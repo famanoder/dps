@@ -3,12 +3,12 @@ const DrawPageStructure = require('../src');
 
 
 const drawConfig = {
-	url: 'https://wq.jd.com/wxportal/index_v6?PTAG=17053.1.1&ptype=1&utm_source=weixin&utm_medium=weixin&utm_campaign=t_1000072672_17053_001',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
+	url: 'http://localhost:8080/#/',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
 	output: {
-		filepath: require('path').resolve(__dirname, '../example/index.html'),   // 生成骨架屏的存放页面，一般为项目的入口页面
+		filepath: require('path').resolve(__dirname, '../../JDC_jdtech/src/index.html'),   // 生成骨架屏的存放页面，一般为项目的入口页面
 		injectSelector: '#app'  // 生成的骨架屏插入页面的节点
 	},
-	// background: '#eee',
+	background: '#ccc',
 	animation: 'opacity 1s linear infinite;',
 	includeElement: function(node, draw) {
 		// 定制某个节点画出来的样子，带上return false
@@ -34,8 +34,8 @@ const drawConfig = {
 	},
 	init: function() {
 		// 生成骨架屏之前的操作，比如删除干扰节点
-		// const modal = document.querySelector('.modal');
-		// modal && modal.parentNode.removeChild();
+		const modal = document.querySelector('.dialog');
+		modal && modal.parentNode.removeChild(modal);
 	}
 }
 

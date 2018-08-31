@@ -45,6 +45,7 @@ module.exports = function evalDOM() {
   function getStyle(node, attr) {
     return (node.nodeType === 1? getComputedStyle(node)[attr]: '') || '';
   }
+  
 
   function DrawPageframe(opts) {
     this.rootNode = opts.rootNode || document.body;
