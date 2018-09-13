@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "a way to make skeleton screen",
   "main": "src/index.js",
+  "bin": {
+    "DPS": "./bin/index.js"
+  },
   "scripts": {
     "example": "cd example && npm i && npm run dev",
     "start": "node scripts/draw.js",
@@ -15,6 +18,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "cheerio": "^1.0.0-rc.2",
+    "commander": "^2.18.0",
     "node-emoji": "^1.8.1",
     "ora": "^3.0.0",
     "puppeteer": "^1.7.0"

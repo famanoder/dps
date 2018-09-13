@@ -1,7 +1,3 @@
-
-const DrawPageStructure = require('../src');
-
-
 const drawConfig = {
 	url: 'https://baidu.com',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
 	output: {
@@ -35,9 +31,10 @@ const drawConfig = {
 	},
 	init: function() {
 		// 生成骨架屏之前的操作，比如删除干扰节点
-		const modal = document.querySelector('.dialog');
-		modal && modal.parentNode.removeChild(modal);
 	}
 }
 
-new DrawPageStructure(drawConfig).start();
+export default {
+    filename: 'drawPageStructure.config.js',
+    template: 
+}

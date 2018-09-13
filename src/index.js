@@ -27,8 +27,10 @@ class DrawPageStructure {
       this.device = device;
       this.headless = headless;
       this.writePageStructure = writePageStructure;
-      this.includeElement = includeElement || '';
-      this.init = init || '';
+      this.includeElement = includeElement || function() {};
+      this.init = init || function() {};
+
+      if(this.headless === undefined) this.headless = true;
 
       if(!url) {
         log.error('please provide entry url !', 1); 
@@ -48,8 +50,8 @@ class DrawPageStructure {
     }catch(e){
       log.error('\n[page.evaluate] ' + e.message, 1);
     }
-    await page.screenshot({path: 'example.png'});
-    let base64 = fs.readFileSync(path.resolve(__dirname, '../example.png')).toString('base64');
+    // await page.screenshot({path: 'example.png'});
+    // let base64 = fs.readFileSync(path.resolve(__dirname, '../example.png')).toString('base64');
     return html;
 
   }
@@ -85,10 +87,13 @@ class DrawPageStructure {
 
     console.log('');
     spinner.stop();
-    await pp.browser.close();
     console.log(' %s ', chalk.green(emoji.get('heavy_check_mark')), `skeleton screen has created in ${this.filepath}`);
     console.log(` %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
-    process.exit(0);
+
+    if(this.headless) {
+      await pp.browser.close();
+      process.exit(0);
+    }
   }
 }
 

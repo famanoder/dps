@@ -98,7 +98,7 @@ module.exports = function evalDOM() {
         const blocksHTML = blocks.join('');
         const div = document.createElement('div');
         div.innerHTML = blocksHTML;
-        document.body.appendChild(div);
+        body.appendChild(div);
         return blocksHTML;
       }
     },
