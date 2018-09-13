@@ -21,6 +21,7 @@
     "commander": "^2.18.0",
     "node-emoji": "^1.8.1",
     "ora": "^3.0.0",
+    "prompts": "^1.1.0",
     "puppeteer": "^1.7.0"
   }
 }

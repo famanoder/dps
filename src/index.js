@@ -3,7 +3,7 @@ const path = require('path');
 const chalk = require('chalk');
 const cheerio = require('cheerio');
 const ora = require('ora');
-const { log, getAgrType, Spinner, emoji, toBase64 } = require('./utils');
+const { log, getAgrType, Spinner, emoji, calcText } = require('./utils');
 const ppteer = require('./pp');
 const evalScripts = require('../evalDOM');
 
@@ -87,7 +87,7 @@ class DrawPageStructure {
 
     console.log('');
     spinner.stop();
-    console.log(' %s ', chalk.green(emoji.get('heavy_check_mark')), `skeleton screen has created in ${this.filepath}`);
+    console.log(' %s ', chalk.green(emoji.get('heavy_check_mark')), `skeleton screen has created and output to ${calcText(this.filepath)}`);
     console.log(` %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
 
     if(this.headless) {
