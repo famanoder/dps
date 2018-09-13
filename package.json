@@ -8,7 +8,6 @@
   },
   "scripts": {
     "example": "cd example && npm i && npm run dev",
-    "start": "node scripts/draw.js",
     "ppt-dev": "nodeppt start -d drawPageStructure.nodeppt -p 8992 -w",
     "ppt-build": "nodeppt generate ./drawPageStructure.nodeppt/ppt.md ./drawPageStructure.nodeppt/ppt-page/ppt -a && cd ./drawPageStructure.nodeppt/ppt-page && jdf u ./ppt -p"
   },
