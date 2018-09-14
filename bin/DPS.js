@@ -11,15 +11,19 @@ const utils = require('../src/utils')
 
     program
     .version(pkg.version)
-    .usage('DPS <command> [options]')
+    .usage('<command> [options]')
     .option('-v, --version', 'latest version');
 
     program
     .command('init')
-    .description('create a default drawPageStructure.config.js file')
+    .description('create a default dps.config.js file')
     .action(function(env, options) {
+        const dpsConfFile = path.resolve(process.cwd(), defConf.filename)
+        if(fs.existsSync(dpsConfFile)) {
+            return console.log(`\n[${defConf.filename}] had been created! you can edit it and then run 'dps start'\n`)
+        }
         askForConfig().then(ans => {
-            const outputPath = path.resolve(process.cwd(), ans.filepath)
+            const outputPath = path.resolve(process.cwd(), ans.filepath).replace(/\\/g, '\\\\')
             prompts({
                 type: 'toggle',
                 name: 'value',
@@ -37,7 +41,7 @@ const utils = require('../src/utils')
                         }),
                         err => {
                             if(err) throw err;
-                            console.log(`\n[${defConf.filename}] has been created! now, you can edit it and then run 'DPS start'\n`)
+                            console.log(`\n[${defConf.filename}] had been created! now, you can edit it and then run 'dps start'\n`)
                         }
                     )
                 }
@@ -51,12 +55,13 @@ const utils = require('../src/utils')
     .action(function() {
         const dpsConfFile = path.resolve(process.cwd(), defConf.filename)
         if(!fs.existsSync(dpsConfFile)) {
-            utils.log.error(`please run 'dps init' to initial a config file`, 1)
+            utils.log.error(`please run 'dps init' to initialize a config file`, 1)
         }
         new DrawPageStructure(require(dpsConfFile)).start()
     });
 
     program.parse(process.argv);
+    if (program.args.length < 1) program.help()
 
 function askForConfig() {
     const questions = [

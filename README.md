@@ -1,4 +1,4 @@
-# DrawPageStructure
+# DrawPageStructure(DPS)
 a way to make skeleton screen
 
 ### usage

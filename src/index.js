@@ -39,7 +39,7 @@ class DrawPageStructure {
         log.error('please provide output filepath !', 1); 
       }
       if(!fs.existsSync(output.filepath)) {
-        log.error('please provide the absolute filepath !', 1); 
+        log.error('[output.filepath:404] please provide the absolute filepath !', 1); 
       }
   }
   async generateSkeletonHTML(page) {
@@ -98,20 +98,3 @@ class DrawPageStructure {
 }
 
 module.exports = DrawPageStructure;
-
-
-/**
- * 1. 入口文件为本地文件
- * 像create-react-app和vue-cli等脚手架工具，在开发环境下都是调用webpack在内存中生成的文件流，
- * 页面为模板，无静态资源相关的引用（除了第三方的），这时puppeteer将访问的页面是空白的，
- * 而且开发阶段页面上引用的路径大多为相对路径，puppeteer也将无法访问该资源，因为无头的原因，
- * 如果开启界面，体验不好；
- * 什么时候运行的问题：dev时运行，会严重影响速度；prod时运行不利于开发时预览；
- * 
- * 2. 入口文件为可访问的地址
- * 内网限制了必须等待30秒
- * 但是不存在puppeteer无法访问静态资源的问题
- * 单独一个命令生成骨架屏的DOM，插入到指定页面（index.html）
- * npm run DrawPageStructure >
- * url > html > [filepath, injectSelector]
-*/

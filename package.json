@@ -1,10 +1,10 @@
 {
   "name": "@nutui/draw-page-structure",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "a way to make skeleton screen",
   "main": "src/index.js",
   "bin": {
-    "DPS": "./bin/index.js"
+    "DPS": "./bin/DPS.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,13 @@
   "bugs": {
     "url": "https://github.com/famanoder/DrawPageStructure/issues"
   },
-  "homepage": "https://github.com/famanoder/DrawPageStructure#readme"
+  "homepage": "https://github.com/famanoder/DrawPageStructure#readme",
+  "keywords": [
+    "nutui",
+    "skeleton screen",
+    "skeleton",
+    "loading",
+    "prerender"
+  ],
+  "devDependencies": {}
 }

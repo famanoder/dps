@@ -6,7 +6,7 @@ module.exports = {
 const drawConfig = {
 	url: '${conf.url}',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
 	output: {
-		filepath: '${conf.filepath}',   // 生成骨架屏的存放页面，一般为项目的入口页面
+		filepath: '${conf.filepath.toString()}',   // 生成骨架屏的存放页面，一般为项目的入口页面
 		injectSelector: '#app'  // 生成的骨架屏插入页面的节点
 	},
 	background: '#eee',
