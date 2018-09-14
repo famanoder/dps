@@ -1,17 +1,15 @@
 {
-  "name": "draw-page-structure",
+  "name": "@nutui/draw-page-structure",
   "version": "0.0.1",
   "description": "a way to make skeleton screen",
   "main": "src/index.js",
   "bin": {
     "DPS": "./bin/index.js"
   },
-  "scripts": {
-    "example": "cd example && npm i && npm run dev",
-    "ppt-dev": "nodeppt start -d drawPageStructure.nodeppt -p 8992 -w",
-    "ppt-build": "nodeppt generate ./drawPageStructure.nodeppt/ppt.md ./drawPageStructure.nodeppt/ppt-page/ppt -a && cd ./drawPageStructure.nodeppt/ppt-page && jdf u ./ppt -p"
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/famanoder/DrawPageStructure.git"
   },
-  "repository": "git@github.com:famanoder/DrawPageStructure.git",
   "author": "famanoder",
   "license": "MIT",
   "dependencies": {
@@ -22,5 +20,9 @@
     "ora": "^3.0.0",
     "prompts": "^1.1.0",
     "puppeteer": "^1.7.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/famanoder/DrawPageStructure/issues"
+  },
+  "homepage": "https://github.com/famanoder/DrawPageStructure#readme"
 }

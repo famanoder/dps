@@ -2,14 +2,13 @@
 a way to make skeleton screen
 
 ### usage
-1. git clone http://git.jd.com/hufeng10/DrawPageStructure.git
-2. `cd DrawPageStructure && npm i`
-2. 运行demo，`npm run example`
-3. 开始生成骨架屏，`npm start`
-4. 可修改`scripts/draw.js`进行相关配置
+1. `npm i @nutui/draw-page-structure -g`
+2. `DPS init`生成配置文件
+3. `DPS start`开始生成骨架屏
+4. 可修改`dps.config.js`进行相关配置
 5. 对于DOM结构比较复杂和图片比较多且分布密集的情况
-    生成的骨架屏效果可能不尽如人意，这时候可以使用includeElement定制某个节点生成生成什么样
-    子，或者使用init在生成骨架屏之前对DOM节点进行调整，比如删除干扰节点；
+    生成的骨架屏效果可能不尽如人意，这时候可以使用`includeElement`定制某个节点生成生成什么样
+    子，或者使用`init`在生成骨架屏之前对DOM节点进行调整，比如删除干扰节点；
 6. `evalDOM.js`支持直接在浏览器端运行，在控制台打印当前页面骨架屏节点，复制添加到应用页面
 
 ### 参数说明
