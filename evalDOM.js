@@ -21,6 +21,9 @@ module.exports = function evalDOM() {
   animation = option[3];
 
   const blocks = [];
+  const win_w = window.innerWidth;
+  const win_h = window.innerHeight;
+
   function drawBlock({width, height, top, left, zIndex = 9999999, background, radius} = {}) {
     const styles = [
       'position: fixed',
@@ -57,11 +60,11 @@ module.exports = function evalDOM() {
   }
 
   function wPercent(x) {
-    return parseFloat(x/window.innerWidth*100).toFixed(3);
+    return parseFloat(x/win_w*100).toFixed(3);
   }
 
   function hPercent(x) {
-    return parseFloat(x/window.innerHeight*100).toFixed(3);
+    return parseFloat(x/win_h*100).toFixed(3);
   }
 
   function includeElement(elements, node) {
@@ -75,8 +78,20 @@ module.exports = function evalDOM() {
         node.hidden;
   }
 
-  const win_w = window.innerWidth;
-  const win_h = window.innerHeight;
+  function isCustomCardBlock(node) {
+    let bgStyle = getStyle(node, 'background');
+    let bgColorReg = /rgba\([\s\S]+?0\)/ig;
+    let bdReg = /(0px)|(none)/;
+    let hasBgColor = !bgColorReg.test(bgStyle) || ~bgStyle.indexOf('gradient');
+    let hasNoBorder = ['top', 'left', 'right', 'bottom'].some(item => {
+      return bdReg.test(getStyle(node, 'border-'+item));
+    });
+    let rect = node.getBoundingClientRect();
+    let { width: w, height: h } = rect;
+    let customCardBlock = !!(hasBgColor && !hasNoBorder && w > 0 && h > 0 && w < 0.95*win_w && h < 0.3*win_h);
+    console.log(customCardBlock, node.className, w/win_w, h/win_h,hasBgColor,!hasNoBorder);
+    return customCardBlock;
+  }
 
   DrawPageframe.prototype = {
     resetDOM: function() {
@@ -111,31 +126,29 @@ module.exports = function evalDOM() {
       function deepFindTextNode(nodes) {
         if(nodes.length) {
           for(let i = 0; i < nodes.length; i++) {
-
+            // 简单暴力的规则，background,border|box-shadow,宽<90%,高<30% 最后的规则
+            // table单独处理
             let node = nodes[i];
             if(isHideStyle(node) || (getArgtype($this.includeElement) === 'function' && $this.includeElement(node, drawBlock) == false)) continue;
             let childNodes = node.childNodes;
             let hasChildText = false;
             let background = getStyle(node, 'backgroundImage');
             let backgroundHasurl = background.match(/url\(.+?\)/);
-
+            
             backgroundHasurl = backgroundHasurl && backgroundHasurl.length;
 
-            if(childNodes && childNodes.length) {
-              for(let j = 0; j < childNodes.length; j++) {
-                if(childNodes[j].nodeType === 3 && childNodes[j].textContent.trim().length) {
-                  hasChildText = true;
-                  break;
-                }
-              }
-              if(!hasChildText) {
-                deepFindTextNode(childNodes);
+            for(let j = 0; j < childNodes.length; j++) {
+              if(childNodes[j].nodeType === 3 && childNodes[j].textContent.trim().length) {
+                hasChildText = true;
+                break;
               }
             }
+
             if((node.nodeType === 3 && node.textContent.trim().length) || 
-              includeElement(['img', 'input', 'textarea', 'svg', 'canvas', 'video', 'audio'], node) || 
+              includeElement(['img', 'input', 'button', 'textarea', 'svg', 'canvas', 'video', 'audio'], node) || 
               backgroundHasurl ||
-              hasChildText) {
+              hasChildText ||
+              isCustomCardBlock(node)) {
                 let rect = node.getBoundingClientRect();
                 let { top: t, left: l, width: w, height: h } = rect;
                 
@@ -144,6 +157,7 @@ module.exports = function evalDOM() {
                   let paddingLeft = parseInt(getStyle(node, 'paddingLeft'));
                   let paddingBottom = parseInt(getStyle(node, 'paddingBottom'));
                   let paddingRight = parseInt(getStyle(node, 'paddingRight'));
+                  console.log('draw',node);
                   drawBlock({
                     width: wPercent(rect.width - paddingLeft - paddingRight), 
                     height: hPercent(rect.height - paddingTop - paddingBottom), 
@@ -152,6 +166,11 @@ module.exports = function evalDOM() {
                     radius: getStyle(node, 'border-radius')
                   });
                 }
+            }else if(childNodes && childNodes.length) {
+              if(!hasChildText) {
+                console.log('deep')
+                deepFindTextNode(childNodes);
+              }
             }
           }
         }
@@ -187,7 +206,7 @@ module.exports = function evalDOM() {
       }catch(e) {
         reject(e);
       }
-    }, 300);
+    }, 1000);
   }); 
 
 }
