@@ -88,8 +88,7 @@ module.exports = function evalDOM() {
     });
     let rect = node.getBoundingClientRect();
     let { width: w, height: h } = rect;
-    let customCardBlock = !!(hasBgColor && !hasNoBorder && w > 0 && h > 0 && w < 0.95*win_w && h < 0.3*win_h);
-    console.log(customCardBlock, node.className, w/win_w, h/win_h,hasBgColor,!hasNoBorder);
+    let customCardBlock = !!(hasBgColor && (!hasNoBorder || getStyle(node, 'box-shadow') != 'none') && w > 0 && h > 0 && w < 0.95*win_w && h < 0.3*win_h);
     return customCardBlock;
   }
 
@@ -126,8 +125,7 @@ module.exports = function evalDOM() {
       function deepFindTextNode(nodes) {
         if(nodes.length) {
           for(let i = 0; i < nodes.length; i++) {
-            // 简单暴力的规则，background,border|box-shadow,宽<90%,高<30% 最后的规则
-            // table单独处理
+            
             let node = nodes[i];
             if(isHideStyle(node) || (getArgtype($this.includeElement) === 'function' && $this.includeElement(node, drawBlock) == false)) continue;
             let childNodes = node.childNodes;
@@ -157,7 +155,6 @@ module.exports = function evalDOM() {
                   let paddingLeft = parseInt(getStyle(node, 'paddingLeft'));
                   let paddingBottom = parseInt(getStyle(node, 'paddingBottom'));
                   let paddingRight = parseInt(getStyle(node, 'paddingRight'));
-                  console.log('draw',node);
                   drawBlock({
                     width: wPercent(rect.width - paddingLeft - paddingRight), 
                     height: hPercent(rect.height - paddingTop - paddingBottom), 
@@ -168,7 +165,6 @@ module.exports = function evalDOM() {
                 }
             }else if(childNodes && childNodes.length) {
               if(!hasChildText) {
-                console.log('deep')
                 deepFindTextNode(childNodes);
               }
             }
@@ -210,3 +206,7 @@ module.exports = function evalDOM() {
   }); 
 
 }
+
+// 待优化：
+// 1. table
+// 2. 文字

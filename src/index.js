@@ -15,6 +15,7 @@ class DrawPageStructure {
       animation,
       device,
       headless,
+      extraHTTPHeaders,
       writePageStructure,
       includeElement,
       init
@@ -26,6 +27,7 @@ class DrawPageStructure {
       this.animation = animation || '';
       this.device = device;
       this.headless = headless;
+      this.extraHTTPHeaders = extraHTTPHeaders;
       this.writePageStructure = writePageStructure;
       this.includeElement = includeElement || function() {};
       this.init = init || function() {};
@@ -73,7 +75,7 @@ class DrawPageStructure {
     });
 
     spinner.text = `正在打开页面：${ pageUrl }...`;
-    const page = await pp.openPage(pageUrl);
+    const page = await pp.openPage(pageUrl, this.extraHTTPHeaders);
 
     spinner.text = '正在生成骨架屏...';
     const html = await this.generateSkeletonHTML(page);

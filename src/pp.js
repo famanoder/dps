@@ -1,5 +1,5 @@
 const ppteer = require('puppeteer');
-const { log } = require('./utils');
+const { log, getAgrType } = require('./utils');
 
 const devices = {
   mobile: [375, 667, 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'],
@@ -10,12 +10,16 @@ const devices = {
 async function pp({device = 'mobile', headless = true}) {
   const browser = await ppteer.launch({headless});
   
-  async function openPage(url) {
+  async function openPage(url, extraHTTPHeaders) {
     const page = await browser.newPage();
     try{
       let deviceSet = devices[device];
       page.setUserAgent(deviceSet[2]);
       page.setViewport({width: deviceSet[0], height: deviceSet[1]});
+
+      if(extraHTTPHeaders && getAgrType(extraHTTPHeaders) === 'object') {
+        await page.setExtraHTTPHeaders(new Map(Object.entries(extraHTTPHeaders)));
+      }
       await page.goto(url, {
         waitUntil: 'networkidle0'
       });
