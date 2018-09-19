@@ -35,7 +35,7 @@ npm i @nutui/draw-page-structure -g
 // dps.config.js
 ...
 includeElement: function(node, draw) {
-	// 定制某个节点画出来的样子，带上return false
+  // 定制某个节点画出来的样子，带上return false
 	if(node.id == 'ui-alert') {
 		// 跳过该节点及其子节点
 		return false;
