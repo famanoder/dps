@@ -13,19 +13,21 @@ const drawConfig = {
 	animation: 'opacity 1s linear infinite;',
 	includeElement: function(node, draw) {
 		// 定制某个节点画出来的样子，带上return false
-		// if(node.id == 'weather') {
-		// 	return false;
+		// if(node.id == 'ui-alert') {
+			// 跳过该节点及其子节点
+			// return false;
 		// }
-		// if(node.tagName.toLowerCase()=='img') {
-		//   draw({
-		//     width: 100,
-		//     height: 8,
-		//     left: 0,
-		//     top: 0,
-		//     zIndex: 99999999,
-		//     background: '#F63515'
-		//   });
-		//	 return false;
+		// if(node.tagName.toLowerCase() === 'img') {
+			// 对该图片生成宽100%，高8%，颜色为红色的色块
+			// draw({
+				// width: 100,
+				// height: 8,
+				// left: 0,
+				// top: 0,
+				// zIndex: 99999999,
+				// background: 'red'
+			// });
+			// return false;
 		// } 
 	},
 	writePageStructure: function(html) {
