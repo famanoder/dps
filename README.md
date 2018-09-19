@@ -20,12 +20,12 @@ npm i @nutui/draw-page-structure -g
 ```javascript
 // dps.config.js
 {
-	url: 'https://baidu.com',
-	output: {
-		filepath: '/Users/famanoder/DrawPageStructure/example/index.html',
-		injectSelector: '#app'
-	},
-	background: '#eee',
+  url: 'https://baidu.com',
+  output: {
+    filepath: '/Users/famanoder/DrawPageStructure/example/index.html',
+    injectSelector: '#app'
+  },
+  background: '#eee',
   animation: 'opacity 1s linear infinite;',
   // ...
 }
@@ -36,22 +36,22 @@ npm i @nutui/draw-page-structure -g
 ...
 includeElement: function(node, draw) {
   // 定制某个节点画出来的样子，带上return false
-	if(node.id == 'ui-alert') {
-		// 跳过该节点及其子节点
-		return false;
-	}
-	if(node.tagName.toLowerCase() === 'img') {
-		// 对该图片生成宽100%，高8%，颜色为红色的色块
-		draw({
-			width: 100,
-			height: 8,
-			left: 0,
-			top: 0,
-			zIndex: 99999999,
-			background: 'red'
-		});
-		return false;
-	} 
+  if(node.id == 'ui-alert') {
+    // 跳过该节点及其子节点
+    return false;
+  }
+  if(node.tagName.toLowerCase() === 'img') {
+    // 对该图片生成宽100%，高8%，颜色为红色的色块
+    draw({
+      width: 100,
+      height: 8,
+      left: 0,
+      top: 0,
+      zIndex: 99999999,
+      background: 'red'
+    });
+    return false;
+  } 
 }
 ...
 ```
@@ -60,17 +60,16 @@ includeElement: function(node, draw) {
 ```javascript
 // dps.config.js
 init: function() {
-	// 生成骨架屏之前的操作
-	
-	// 比如删除干扰节点
-	let toTop = document.querySelector('#to-top');
-	if(toTop) {
-		toTop.parentNode.removeChild(toTop);
-	}
-
-	// 比如适当的调整某个节点的样式
-	let specil = document.querySelector('.specil');
-	specil.style.visibility = 'hidden';
+  // 生成骨架屏之前的操作
+  
+  // 比如删除干扰节点
+  let toTop = document.querySelector('#to-top');
+  if(toTop) {
+    toTop.parentNode.removeChild(toTop);
+  }
+  // 比如适当的调整某个节点的样式
+  let specil = document.querySelector('.specil');
+  specil.style.visibility = 'hidden';
 }
 ```
 > 对于DOM结构比较复杂和图片比较多且分布密集的情况生成的骨架屏效果可能不尽如人意，这时候可以使用`includeElement`定制某个节点生成生成什么样子，或者使用`init`在生成骨架屏之前对DOM节点进行调整，这两个函数在面对相对复杂的DOM结构时会比较有用；
