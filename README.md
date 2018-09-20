@@ -5,6 +5,7 @@
 * **simple**: some usefull config items do it well
 ---
 * 某APP首页效果图
+
 ![](https://raw.githubusercontent.com/famanoder/DrawPageStructure/master/imgs/ezgif.com-resize.gif)
 
 ### Install
