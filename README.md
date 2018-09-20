@@ -5,7 +5,7 @@
 * **simple**: some usefull config items do it well
 ---
 * 某APP首页效果图
-<img src="https://raw.githubusercontent.com/famanoder/DrawPageStructure/master/imgs/ezgif.com-resize.gif" style="border:1px solid #eee;width:320px;display:block;"/>
+![](https://raw.githubusercontent.com/famanoder/DrawPageStructure/master/imgs/ezgif.com-resize.gif)
 
 ### Install
 ---
