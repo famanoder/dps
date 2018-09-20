@@ -3,7 +3,9 @@
 * **automatic**: easy to use CLI to make skeleton screen
 * **flexible**: just use javascript even in browser
 * **simple**: some usefull config items do it well
-
+---
+* 某APP首页效果图
+<img src="https://github.com/famanoder/DrawPageStructure/tree/master/imgs/ezgif.com-video-to-gif.gif?raw=true" style="border:1px solid #eee;width:320px;display:block;"/>
 ### Install
 ---
 ```bash
@@ -97,6 +99,7 @@ createSkeletonHTML({
 | output.injectSelector | 骨架屏节点插入的位置 | #app | 否
 | background | 骨架屏主题色 | #ecf0f2 | 否
 | animation | css3动画属性 | -- | 否
+| rootNode | 真对某个模块生成骨架屏 | document.body | 否
 | device | 设备类型 | mobile | 否
 | extraHTTPHeaders | 添加请求头 | -- | 否
 | init | 开始生成之前的操作 | -- | 否
