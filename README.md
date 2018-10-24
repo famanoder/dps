@@ -8,7 +8,7 @@
 
 * 该方案的大概思路图
 
-![](http://img13.360buyimg.com/uba/jfs/t1/7396/38/1917/48634/5bd0485aEa422520c/0644d1f6a9ccfcd5.png)
+![](http://img11.360buyimg.com/uba/jfs/t1/1025/1/11769/33851/5bd049feEb780d302/c410b89bc22daa3d.png)
 
 ---
 * 某APP首页效果图
