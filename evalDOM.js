@@ -23,7 +23,7 @@ module.exports = function evalDOM() {
   const blocks = [];
   const win_w = window.innerWidth;
   const win_h = window.innerHeight;
-
+  
   function drawBlock({width, height, top, left, zIndex = 9999999, background, radius} = {}) {
     const styles = [
       'position: fixed',
