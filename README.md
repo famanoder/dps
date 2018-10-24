@@ -5,6 +5,12 @@
 * **simple**: some usefull config items do it well
 
 ---
+
+* 该方案的大概思路图
+
+![](http://img10.360buyimg.com/uba/jfs/t1/6657/23/2282/39354/5bd045f4E3418ddb2/deb907a9467798ea.png)
+
+---
 * 某APP首页效果图
 
 ![](https://raw.githubusercontent.com/famanoder/DrawPageStructure/master/imgs/ezgif.com-resize.gif)
