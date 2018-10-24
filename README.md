@@ -1,8 +1,9 @@
-# DrawPageStructure(dps)
+# dps(DrawPageStructure)
 > a way to make skeleton screen
 * **automatic**: easy to use CLI to make skeleton screen
 * **flexible**: just use javascript even in browser
 * **simple**: some usefull config items do it well
+
 ---
 * 某APP首页效果图
 
@@ -18,9 +19,13 @@ npm i @nutui/draw-page-structure -g
 1. `dps init`生成配置文件`dps.config.js`
 2. 修改`dps.config.js`进行相关配置
 3. `dps start`开始生成骨架屏
+
 ### Examples
+
 ---
+
 * basic
+
 ```javascript
 // dps.config.js
 {
@@ -34,7 +39,9 @@ npm i @nutui/draw-page-structure -g
   // ...
 }
 ```
+
 * 根据节点自定义生成
+
 ```javascript
 // dps.config.js
 ...
@@ -61,6 +68,7 @@ includeElement: function(node, draw) {
 ```
 
 * 开始生成前的初始化操作
+
 ```javascript
 // dps.config.js
 init: function() {
@@ -76,8 +84,11 @@ init: function() {
   specil.style.visibility = 'hidden';
 }
 ```
+
 > 对于DOM结构比较复杂和图片比较多且分布密集的情况生成的骨架屏效果可能不尽如人意，这时候可以使用`includeElement`定制某个节点生成生成什么样子，或者使用`init`在生成骨架屏之前对DOM节点进行调整，这两个函数在面对相对复杂的DOM结构时会比较有用；
+
 * 在浏览器中运行
+
 ```javascript
 const createSkeletonHTML = require('@nutui/draw-page-structure/evalDOM')
 
@@ -91,6 +102,7 @@ createSkeletonHTML({
   console.error(e)
 })
 ```
+
 > 可在控制台输出当前页面骨架屏节点，复制添加到应用页面；该做法目前来说最大的作用在于应对需要登录的页面，可在相应页面直接调用evalDOM函数生成该页面的骨架屏节点；
 
 ### 参数说明
