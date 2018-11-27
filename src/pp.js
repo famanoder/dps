@@ -24,7 +24,8 @@ async function pp({device = 'mobile', headless = true}) {
         waitUntil: 'networkidle0'
       });
     }catch(e){
-      log.error('\n' + e.message);
+      console.log('\n');
+      log.error(e.message);
     }
     return page;
   }

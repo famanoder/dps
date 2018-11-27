@@ -1,8 +1,6 @@
 const fs = require('fs');
-const path = require('path');
 const chalk = require('chalk');
 const cheerio = require('cheerio');
-const ora = require('ora');
 const { log, getAgrType, Spinner, emoji, calcText } = require('./utils');
 const ppteer = require('./pp');
 const evalScripts = require('../evalDOM');
@@ -39,6 +37,9 @@ class DrawPageStructure {
       }
       if(!output.filepath) {
         log.error('please provide output filepath !', 1); 
+      }
+      if(!fs.existsSync(output.filepath) || !fs.statSync(output.filepath).isFile()) {
+        log.error('[output.filepath] should be a file !', 1); 
       }
       if(!fs.existsSync(output.filepath)) {
         log.error('[output.filepath:404] please provide the absolute filepath !', 1); 
@@ -89,6 +90,7 @@ class DrawPageStructure {
 
     console.log('');
     spinner.stop();
+    
     console.log(' %s ', chalk.green(emoji.get('heavy_check_mark')), `skeleton screen has created and output to ${calcText(this.filepath)}`);
     console.log(` %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
 

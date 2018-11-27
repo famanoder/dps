@@ -3,6 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 
+import {Cell} from '@nutui/nutui';
+
+Vue.use(Cell);
+
 Vue.config.productionTip = false
 // require('../../evalDOM')({
 //   background: 'red',

@@ -9,6 +9,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "babel-plugin-import": "^1.11.0",
     "vue": "^2.5.2"
   },
   "devDependencies": {

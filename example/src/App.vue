@@ -1,17 +1,13 @@
 <template>
   <div id="app">
-    <HelloWorld/>
-  </div>
+    <nut-cell title="123" desc="ass" :showIcon="true"/>
+    <nut-icon type="plus"></nut-icon>
+ssss  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  name: 'App'
 }
 </script>
 

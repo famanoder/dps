@@ -11,7 +11,7 @@
 ![](https://raw.githubusercontent.com/famanoder/DrawPageStructure/master/imgs/mind.png)
 
 ---
-* 某APP首页效果图
+* 京东PLUS会员正式中首页效果图
 
 ![](https://raw.githubusercontent.com/famanoder/DrawPageStructure/master/imgs/ezgif.com-resize.gif)
 

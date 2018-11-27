@@ -2,4 +2,5 @@
 /test.js
 /example/node_modules
 /yarn.lock
-/dps.config.js
+/example
+/drawPageStructure.nodeppt

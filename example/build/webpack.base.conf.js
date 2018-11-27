@@ -33,13 +33,23 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
+        use: [{
+          loader: 'vue-loader',
+          options: vueLoaderConfig
+        }]
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client'),resolve('node_modules/@nutui/nutui')]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+            "css-loader",
+            "sass-loader"
+        ],
+        include: [resolve('node_modules/@nutui/nutui')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

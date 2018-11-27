@@ -56,6 +56,8 @@ module.exports = function evalDOM() {
     this.includeElement = opts.includeElement;
     this.init = opts.init;
 
+    this.originStyle = {};
+
     return this instanceof DrawPageframe? this: new DrawPageframe(opts); 
   }
 
@@ -95,8 +97,15 @@ module.exports = function evalDOM() {
   DrawPageframe.prototype = {
     resetDOM: function() {
       this.init && this.init();
+
+      this.originStyle = {
+        scrollTop: window.scrollY,
+        bodyOverflow: getStyle(document.body, 'overflow')
+      };
+
       window.scrollTo(0, this.offsetTop);
-      document.body.style.cssText += 'overflow:hidden!important;';
+      document.body.style.overflow = 'hidden!important';
+
       drawBlock({
         width: 100, 
         height: 100, 
@@ -108,12 +117,14 @@ module.exports = function evalDOM() {
     },
     showBlocks: function() {
       if(blocks.length) {
-        const { body } = document;
-        const blocksHTML = blocks.join('');
-        const div = document.createElement('div');
-        div.innerHTML = blocksHTML;
-        body.appendChild(div);
-        return blocksHTML;
+        // const { body } = document;
+        // const blocksHTML = blocks.join('');
+        // const div = document.createElement('div');
+        // div.innerHTML = blocksHTML;
+        // body.appendChild(div);
+        // return blocksHTML;
+        window.scrollTo(0, this.originStyle.scrollTop);
+        document.body.style.overflow = this.originStyle.bodyOverflow;
       }
     },
 
