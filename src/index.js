@@ -13,6 +13,7 @@ class DrawPageStructure {
       output = {},
       background,
       animation,
+      rootNode,
       device,
       headless,
       extraHTTPHeaders,
@@ -25,6 +26,7 @@ class DrawPageStructure {
       this.injectSelector = output.injectSelector || '#app';
       this.background = background || '#ecf0f2';
       this.animation = animation || '';
+      this.rootNode = rootNode;
       this.device = device;
       this.headless = headless;
       this.extraHTTPHeaders = extraHTTPHeaders;
@@ -48,7 +50,15 @@ class DrawPageStructure {
     let html = '';
 
     try{
-      html = await page.evaluate.call(page, evalScripts, this.init.toString(), this.includeElement.toString(), this.background, this.animation);
+      html = await page.evaluate.call(
+        page, 
+        evalScripts, 
+        this.init.toString(), 
+        this.includeElement.toString(), 
+        this.background, 
+        this.animation,
+        this.rootNode
+      );
     }catch(e){
       log.error('\n[page.evaluate] ' + e.message, 1);
     }
