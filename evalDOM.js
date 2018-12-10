@@ -133,16 +133,27 @@ module.exports = function evalDOM() {
       paddingRight
     } = getPadding(node);
     const blockWidth = w - paddingLeft - paddingRight;
-    const lines_1 = parseInt(textWidth / blockWidth);
+    const lines_1 = Math.ceil(textWidth / blockWidth);
 
     if(lines_1 <= 1) {
       drawBlock({
-        width: wPercent(textWidth - ), 
+        width: wPercent(textWidth), 
         height: hPercent(textHeight), 
         top: hPercent(t + (h - textHeight) / 2), 
         left: isCenter? (w - textWidth) / 2: l + paddingLeft,
         radius: getStyle(node, 'border-radius')
       });
+    }else{
+      const iTop = t + paddingTop;
+      for(const i=0;i<lines_1;i++) {
+        drawBlock({
+          width: wPercent(w - paddingLeft - paddingRight), 
+          height: hPercent(textHeight), 
+          top: hPercent(t + (h - textHeight) / 2), textHeight * i + 
+          left: isCenter? (w - textWidth) / 2: l + paddingLeft,
+          radius: getStyle(node, 'border-radius')
+        });
+      }
     }
     
   }
@@ -177,6 +188,7 @@ module.exports = function evalDOM() {
     this.offsetTop = opts.offsetTop || 0;
     this.includeElement = opts.includeElement;
     this.init = opts.init;
+    this.originStyle = {};
 
     return this instanceof DrawPageframe? this: new DrawPageframe(opts); 
   }
@@ -184,6 +196,10 @@ module.exports = function evalDOM() {
   DrawPageframe.prototype = {
     resetDOM: function() {
       this.init && this.init();
+      this.originStyle = {
+        scrollTop: window.scrollY,
+        bodyOverflow: getStyle(document.body, 'overflow')
+      };
       window.scrollTo(0, this.offsetTop);
       document.body.style.cssText += 'overflow:hidden!important;';
       drawBlock({
@@ -197,12 +213,14 @@ module.exports = function evalDOM() {
     },
     showBlocks: function() {
       if(blocks.length) {
-        const { body } = document;
-        const blocksHTML = blocks.join('');
-        const div = document.createElement('div');
-        div.innerHTML = blocksHTML;
-        body.appendChild(div);
-        return blocksHTML;
+        // const { body } = document;
+        // const blocksHTML = blocks.join('');
+        // const div = document.createElement('div');
+        // div.innerHTML = blocksHTML;
+        // body.appendChild(div);
+        // return blocksHTML;
+        window.scrollTo(0, this.originStyle.scrollTop);
+        document.body.style.overflow = this.originStyle.bodyOverflow;
       }
     },
 

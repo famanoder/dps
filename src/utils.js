@@ -1,5 +1,8 @@
 const chalk = require('chalk');
 const ora = require('ora');
+const emoji = require('node-emoji');
+
+const likeLinux =  process.env.TERM === 'cygwin' || process.platform !== 'win32';
 
 function calcText(str) {
   if(str.length > 40) {
@@ -13,7 +16,7 @@ function log() {
 }
 
 log.error = function(msg, exit) {
-  log(chalk.red(msg));
+  log(chalk.gray(`[dps]:`, chalk.red(msg)));
   exit && process.exit(0);
 }
 
@@ -27,7 +30,7 @@ exports.getAgrType = function(agr) {
   return Object.prototype.toString.call(agr).split(/\s/)[1].slice(0, -1).toLowerCase();
 }
 exports.Spinner = function(color) {
-  const spinner = ora({
+  let opt = likeLinux? {
     spinner: {
       "interval": 125,
       "frames": [
@@ -38,13 +41,19 @@ exports.Spinner = function(color) {
         "∙∙∙"
       ]
     }
-  }).start();
+  }: '';
+  const spinner = ora(opt).start();
   spinner.color = color;
   return spinner;
 }
 
-exports.emoji = require('node-emoji');
+const emoji_get = emoji.get.bind(emoji);
+emoji.get = function() {
+  return !likeLinux? '·': emoji_get.apply(emoji, arguments);
+}
+
+exports.emoji = emoji;
 
 exports.toBase64 = function(str) {
-  return new Buffer(str).toString('base64');
+  return Buffer.from(str).toString('base64');
 }
