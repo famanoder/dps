@@ -1,5 +1,6 @@
 module.exports = function evalDOM() {
-  const ELEMENTS = ['img', 'input', 'button', 'textarea', 'svg', 'canvas', 'video', 'audio'];
+  const ELEMENTS = ['img', 'input', 'button', 'textarea', 'svg', 'canvas', 'video', 'audio', 'pre', 'code', 'xmp'];
+  const agrPrefix = `dps-`;
   const blocks = [];
   const win_w = window.innerWidth;
   const win_h = window.innerHeight;
@@ -11,6 +12,7 @@ module.exports = function evalDOM() {
   let option = [];
   let backgroundColor;
   let animation;
+  let header;
 
   if(agrs.length === 1 && getArgtype(agrs0) === 'object') {
     // from config
@@ -19,7 +21,8 @@ module.exports = function evalDOM() {
       getArgtype(agrs0.includeElement) === 'function'? agrs0.includeElement: noop,
       agrs0.background || '#ecf0f2',
       agrs0.animation,
-      agrs0.rootNode
+      agrs0.rootNode,
+      agrs0.header
     ];
   }else{
     // from page.evaluate
@@ -27,6 +30,7 @@ module.exports = function evalDOM() {
   }
   backgroundColor = option[2];
   animation = option[3];
+  header = option[4];
 
   function drawBlock({width, height, top, left, zIndex = 9999999, background, radius} = {}) {
     const styles = [
@@ -120,45 +124,6 @@ module.exports = function evalDOM() {
     return {t, l, w, h};
   }
 
-  function drawTextBlock(node) {
-    const {t, l, w, h} = getRect(node);
-    const text = node.innerHTML.replace(/<[^>]+>/g, '');
-    const fontSize = getStyle(node, 'font-size');
-    const fontWeight = getStyle(node, 'font-weight');
-    const isCenter = getStyle(node, 'text-align');
-    const {w: textWidth, h: textHeight} = calcTextWidth(text, {fontSize, fontWeight});
-    const {
-      paddingTop,
-      paddingLeft,
-      paddingBottom,
-      paddingRight
-    } = getPadding(node);
-    const blockWidth = w - paddingLeft - paddingRight;
-    const lines_1 = Math.ceil(textWidth / blockWidth);
-
-    if(lines_1 <= 1) {
-      drawBlock({
-        width: wPercent(textWidth), 
-        height: hPercent(textHeight), 
-        top: hPercent(t + (h - textHeight) / 2), 
-        left: isCenter? (w - textWidth) / 2: l + paddingLeft,
-        radius: getStyle(node, 'border-radius')
-      });
-    }else{
-      const iTop = t + paddingTop;
-      for(const i=0;i<lines_1;i++) {
-        drawBlock({
-          width: wPercent(w - paddingLeft - paddingRight), 
-          height: hPercent(textHeight), 
-          top: hPercent(t + (h - textHeight) / 2), 
-          left: isCenter? (w - textWidth) / 2: l + paddingLeft,
-          radius: getStyle(node, 'border-radius')
-        });
-      }
-    }
-    
-  }
-
   function getPadding(node) {
     return {
       paddingTop: parseInt(getStyle(node, 'paddingTop')),
@@ -180,8 +145,17 @@ module.exports = function evalDOM() {
       options[2] = params[2];
       options[3] = params[3];
       options[4] = params[4];
+
     }
     return options;
+  }
+
+  function parseAgrs(agrs = []) {
+    let params = {};
+    agrs.forEach(agr => {
+      const item
+      params
+    });
   }
 
   function DrawPageframe(opts) {
@@ -228,7 +202,7 @@ module.exports = function evalDOM() {
     },
 
     startDraw: function() {
-      let $this = this;
+      const $this = this;
       this.resetDOM();
       const nodes = this.rootNode.childNodes;
       
@@ -273,8 +247,6 @@ module.exports = function evalDOM() {
                     radius: getStyle(node, 'border-radius')
                   });
                 }
-            } else if((node.nodeType === 3 && node.textContent.trim().length) || hasChildText) {
-              // drawTextBlock(node);
             } else if(childNodes && childNodes.length) {
               if(!hasChildText) {
                 deepFindNode(childNodes);

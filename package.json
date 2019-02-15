@@ -8,12 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/famanoder/DrawPageStructure.git"
+    "url": "git+ssh://git@github.com/famanoder/dps.git"
   },
   "author": "famanoder",
   "license": "MIT",
   "scripts": {
-    "start": "./bin/DPS.js start"
+    "start": "node ./bin/dps.js start"
+  },
+  "app": {
+    "alias": "dps"
   },
   "dependencies": {
     "chalk": "^2.4.1",
