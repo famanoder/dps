@@ -3,7 +3,7 @@ module.exports = {
     filename: 'dps.config.js',
 		getTemplate: function(conf = {}) {
 			return `
-const drawConfig = {
+const dpsConfig = {
 	url: '${conf.url}',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
 	output: {
 		filepath: '${conf.filepath.toString()}',   // 生成骨架屏的存放页面，一般为项目的入口页面
@@ -40,7 +40,7 @@ const drawConfig = {
 	}
 }
 
-module.exports = drawConfig;
+module.exports = dpsConfig;
 
 		`
 		}

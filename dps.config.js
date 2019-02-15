@@ -1,11 +1,15 @@
 
-const drawConfig = {
-	url: 'http://plus.m.jd.com/index',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
+const dpsConfig = {
+	url: 'https://famanoder.com/notes/preview/5be144040ad80b5889b50a3b',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
 	output: {
 		filepath: 'D:\\workspace\\DrawPageStructure\\example\\index.html',   // 生成骨架屏的存放页面，一般为项目的入口页面
 		injectSelector: '#app'  // 生成的骨架屏插入页面的节点
 	},
 	background: '#eee',
+	header: {
+		height: 40,
+		background: red
+	},
 	animation: 'opacity 1s linear infinite;',
 	includeElement: function(node, draw) {
 		// 定制某个节点画出来的样子，带上return false
@@ -37,6 +41,6 @@ const drawConfig = {
 	}
 }
 
-module.exports = drawConfig;
+module.exports = dpsConfig;
 
 		

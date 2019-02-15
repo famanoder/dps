@@ -12,6 +12,7 @@ class DrawPageStructure {
       background,
       animation,
       rootNode,
+      header,
       device,
       headless,
       extraHTTPHeaders,
@@ -25,6 +26,7 @@ class DrawPageStructure {
       this.background = background || '#ecf0f2';
       this.animation = animation || '';
       this.rootNode = rootNode;
+      this.header = header;
       this.device = device;
       this.headless = headless;
       this.extraHTTPHeaders = extraHTTPHeaders;
@@ -57,9 +59,13 @@ class DrawPageStructure {
         this.init.toString(), 
         this.includeElement.toString(), 
         this.background, 
-        this.animation,
-        this.rootNode
+        'dps-animation:this.animation',
+        this.rootNode,
+        this.header
       );
+      html = await page.evaluate.apply(page, [
+
+      ]);
     }catch(e){
       log.error('\n[page.evaluate] ' + e.message, 1);
     }

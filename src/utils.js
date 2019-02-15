@@ -2,7 +2,23 @@ const chalk = require('chalk');
 const ora = require('ora');
 const emoji = require('node-emoji');
 
+const {app} = require('../package.json');
+const appName = app.alias;
+
 const likeLinux =  process.env.TERM === 'cygwin' || process.platform !== 'win32';
+
+const genArgs = {
+  // {name: {type, value}}
+  // appName-name-type:value
+  prefixName: `${appName}-`,
+  create(args) {
+    if(getAgrType(args) !== 'object') return;
+    return Object.keys(args).map(item => {
+      const {type, value} = args[item];
+      return `${this.prefixName + item }-${type}:${value}`;
+    });
+  }
+}
 
 function calcText(str) {
   if(str.length > 40) {
@@ -16,7 +32,7 @@ function log() {
 }
 
 log.error = function(msg, exit) {
-  log(chalk.gray(`[dps]:`, chalk.red(msg)));
+  log(chalk.gray(`[${appName}]:`, chalk.red(msg)));
   exit && process.exit(0);
 }
 
@@ -24,12 +40,11 @@ log.info = function(msg) {
   log(chalk.greenBright(msg));
 }
 
-exports.log = log;
-exports.calcText = calcText;
-exports.getAgrType = function(agr) {
+function getAgrType(agr) {
   return Object.prototype.toString.call(agr).split(/\s/)[1].slice(0, -1).toLowerCase();
 }
-exports.Spinner = function(color) {
+
+function Spinner(color) {
   let opt = likeLinux? {
     spinner: {
       "interval": 125,
@@ -52,8 +67,10 @@ emoji.get = function() {
   return !likeLinux? '·': emoji_get.apply(emoji, arguments);
 }
 
+exports.log = log;
+exports.calcText = calcText;
+exports.getAgrType = getAgrType;
+exports.Spinner = Spinner;
 exports.emoji = emoji;
 
-exports.toBase64 = function(str) {
-  return Buffer.from(str).toString('base64');
-}
+
