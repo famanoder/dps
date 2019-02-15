@@ -1,4 +1,5 @@
 module.exports = function evalDOM() {
+  const ELEMENTS = ['img', 'input', 'button', 'textarea', 'svg', 'canvas', 'video', 'audio'];
   const blocks = [];
   const win_w = window.innerWidth;
   const win_h = window.innerHeight;
@@ -149,7 +150,7 @@ module.exports = function evalDOM() {
         drawBlock({
           width: wPercent(w - paddingLeft - paddingRight), 
           height: hPercent(textHeight), 
-          top: hPercent(t + (h - textHeight) / 2), textHeight * i + 
+          top: hPercent(t + (h - textHeight) / 2), 
           left: isCenter? (w - textWidth) / 2: l + paddingLeft,
           radius: getStyle(node, 'border-radius')
         });
@@ -213,14 +214,16 @@ module.exports = function evalDOM() {
     },
     showBlocks: function() {
       if(blocks.length) {
-        // const { body } = document;
-        // const blocksHTML = blocks.join('');
-        // const div = document.createElement('div');
-        // div.innerHTML = blocksHTML;
-        // body.appendChild(div);
-        // return blocksHTML;
+        const { body } = document;
+        const blocksHTML = blocks.join('');
+        const div = document.createElement('div');
+        div.innerHTML = blocksHTML;
+        body.appendChild(div);
+
         window.scrollTo(0, this.originStyle.scrollTop);
         document.body.style.overflow = this.originStyle.bodyOverflow;
+
+        return blocksHTML;
       }
     },
 
@@ -249,8 +252,9 @@ module.exports = function evalDOM() {
               }
             }
 
-            if(includeElement(['img', 'input', 'button', 'textarea', 'svg', 'canvas', 'video', 'audio'], node) || 
+            if(includeElement(ELEMENTS, node) || 
               backgroundHasurl ||
+              (node.nodeType === 3 && node.textContent.trim().length) || hasChildText ||
               isCustomCardBlock(node)) {
                 const {t, l, w, h} = getRect(node);
                 
@@ -270,7 +274,7 @@ module.exports = function evalDOM() {
                   });
                 }
             } else if((node.nodeType === 3 && node.textContent.trim().length) || hasChildText) {
-              drawTextBlock(node);
+              // drawTextBlock(node);
             } else if(childNodes && childNodes.length) {
               if(!hasChildText) {
                 deepFindNode(childNodes);
