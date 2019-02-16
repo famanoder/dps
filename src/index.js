@@ -1,7 +1,7 @@
 const fs = require('fs');
 const chalk = require('chalk');
 const cheerio = require('cheerio');
-const { log, getAgrType, Spinner, emoji, calcText } = require('./utils');
+const { log, getAgrType, Spinner, emoji, calcText, genArgs } = require('./utils');
 const ppteer = require('./pp');
 const evalScripts = require('../evalDOM');
 
@@ -42,6 +42,9 @@ class DrawPageStructure {
       if(!output.filepath) {
         log.error('please provide output filepath !', 1); 
       }
+      if(header && getAgrType(header) !== 'object') {
+        log.error('[header] should be an object !', 1);
+      }
       if(!fs.existsSync(output.filepath) || !fs.statSync(output.filepath).isFile()) {
         log.error('[output.filepath] should be a file !', 1); 
       }
@@ -53,21 +56,46 @@ class DrawPageStructure {
     let html = '';
 
     try{
-      html = await page.evaluate.call(
-        page, 
-        evalScripts, 
-        this.init.toString(), 
-        this.includeElement.toString(), 
-        this.background, 
-        'dps-animation:this.animation',
-        this.rootNode,
-        this.header
-      );
-      html = await page.evaluate.apply(page, [
-
-      ]);
+      // html = await page.evaluate.call(
+      //   page, 
+      //   evalScripts, 
+      //   this.init.toString(), 
+      //   this.includeElement.toString(), 
+      //   this.background, 
+      //   this.animation,
+      //   this.rootNode,
+      //   this.header
+      // );
+      const agrs = genArgs.create({
+        init: {
+          type: 'function',
+          value: this.init.toString()
+        },
+        includeElement: {
+          type: 'function',
+          value: this.includeElement.toString()
+        }, 
+        background: {
+          type: 'string',
+          value: this.background
+        }, 
+        animation: {
+          type: 'string',
+          value: this.animation
+        },
+        rootNode: {
+          type: 'string',
+          value: this.rootNode
+        },
+        header: {
+          type: 'object',
+          value: JSON.stringify(this.header)
+        }
+      });
+      agrs.unshift(evalScripts);
+      html = await page.evaluate.apply(page, agrs);
     }catch(e){
-      log.error('\n[page.evaluate] ' + e.message, 1);
+      log.error('\n[page.evaluate] ' + e.message);
     }
     // await page.screenshot({path: 'example.png'});
     // let base64 = fs.readFileSync(path.resolve(__dirname, '../example.png')).toString('base64');

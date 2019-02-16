@@ -72,5 +72,5 @@ exports.calcText = calcText;
 exports.getAgrType = getAgrType;
 exports.Spinner = Spinner;
 exports.emoji = emoji;
-
+exports.genArgs = genArgs;
 
