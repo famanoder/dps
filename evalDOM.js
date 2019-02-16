@@ -13,7 +13,7 @@ module.exports = function evalDOM() {
   let backgroundColor;
   let animation;
   let header;
-
+  console.log(parseAgrs([...agrs]))
   if(agrs.length === 1 && getArgtype(agrs0) === 'object') {
     // from config
     option = [
@@ -152,10 +152,16 @@ module.exports = function evalDOM() {
 
   function parseAgrs(agrs = []) {
     let params = {};
+    console.log('agrs',agrs)
     agrs.forEach(agr => {
-      const item
-      params
+      const sep = agr.indexOf(':');
+      const [appName, name, type] = agr.slice(0, sep).split('-');
+      const val = agr.slice(sep + 1);
+      params[name] = type === 'function'? eval('(' + val + ')'): 
+                      type === 'object'? JSON.parse(val):
+                      val;
     });
+    return params;
   }
 
   function DrawPageframe(opts) {
