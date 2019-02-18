@@ -1,6 +1,6 @@
 {
   "name": "@nutui/draw-page-structure",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "a way to make skeleton screen",
   "main": "src/index.js",
   "bin": {
