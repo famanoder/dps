@@ -105,7 +105,9 @@ class DrawPageStructure {
   writeToFilepath(html) {
     let filepath = this.filepath;
     let fileHTML = fs.readFileSync(filepath);
-    let $ = cheerio.load(fileHTML);
+    let $ = cheerio.load(fileHTML, {
+      decodeEntities: false
+    });
     $(this.injectSelector).html(html);
     fs.writeFileSync(filepath, $.html('html'));
   }
