@@ -1,6 +1,6 @@
 {
   "name": "@nutui/draw-page-structure",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "a way to make skeleton screen",
   "main": "src/index.js",
   "bin": {
@@ -13,7 +13,7 @@
   "author": "famanoder",
   "license": "MIT",
   "scripts": {
-    "start": "./bin/DPS.js start"
+    "start": "node ./bin/dps.js start"
   },
   "dependencies": {
     "chalk": "^2.4.1",
