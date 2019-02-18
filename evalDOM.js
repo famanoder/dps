@@ -1,5 +1,5 @@
 module.exports = function evalDOM() {
-  const ELEMENTS = ['img', 'input', 'button', 'textarea', 'svg', 'canvas', 'video', 'audio'];
+  const ELEMENTS = ['audio', 'button', 'canvas', 'code', 'img', 'input', 'pre', 'svg', 'textarea', 'video', 'xmp'];
   const blocks = [];
   const win_w = window.innerWidth;
   const win_h = window.innerHeight;
@@ -8,27 +8,11 @@ module.exports = function evalDOM() {
   if(!agrs.length) agrs = {length: 1, 0: {}};
   let agrs0 = agrs[0];
   
-  let option = [];
-  let backgroundColor;
-  let animation;
-
-  if(agrs.length === 1 && getArgtype(agrs0) === 'object') {
-    // from config
-    option = [
-      getArgtype(agrs0.init) === 'function'? agrs0.init: noop,
-      getArgtype(agrs0.includeElement) === 'function'? agrs0.includeElement: noop,
-      agrs0.background || '#ecf0f2',
-      agrs0.animation,
-      agrs0.rootNode
-    ];
-  }else{
-    // from page.evaluate
-    option = parseParams(arguments);
+  if(agrs.length !== 1 || getArgtype(agrs0) !== 'object') {
+    agrs = parseAgrs([...agrs]);
   }
-  backgroundColor = option[2];
-  animation = option[3];
 
-  function drawBlock({width, height, top, left, zIndex = 9999999, background, radius} = {}) {
+  function drawBlock({width, height, top, left, zIndex = 999, background, radius} = {}) {
     const styles = [
       'position: fixed',
       'z-index: '+zIndex,
@@ -36,10 +20,10 @@ module.exports = function evalDOM() {
       'left: '+left+'%',
       'width: '+width+'%',
       'height: '+height+'%',
-      'background: '+(background || backgroundColor)
+      'background: '+(background || agrs.background)
     ];
-    radius && radius != '0px' && styles.push('border-radius: '+radius);
-    animation && styles.push('animation: '+animation);
+    radius && radius != '0px' && styles.push('border-radius: '+ radius);
+    agrs.animation && styles.push('animation: '+ agrs.animation);
     blocks.push(`<div style="${styles.join(';')}"></div>`);
   }
 
@@ -120,45 +104,6 @@ module.exports = function evalDOM() {
     return {t, l, w, h};
   }
 
-  function drawTextBlock(node) {
-    const {t, l, w, h} = getRect(node);
-    const text = node.innerHTML.replace(/<[^>]+>/g, '');
-    const fontSize = getStyle(node, 'font-size');
-    const fontWeight = getStyle(node, 'font-weight');
-    const isCenter = getStyle(node, 'text-align');
-    const {w: textWidth, h: textHeight} = calcTextWidth(text, {fontSize, fontWeight});
-    const {
-      paddingTop,
-      paddingLeft,
-      paddingBottom,
-      paddingRight
-    } = getPadding(node);
-    const blockWidth = w - paddingLeft - paddingRight;
-    const lines_1 = Math.ceil(textWidth / blockWidth);
-
-    if(lines_1 <= 1) {
-      drawBlock({
-        width: wPercent(textWidth), 
-        height: hPercent(textHeight), 
-        top: hPercent(t + (h - textHeight) / 2), 
-        left: isCenter? (w - textWidth) / 2: l + paddingLeft,
-        radius: getStyle(node, 'border-radius')
-      });
-    }else{
-      const iTop = t + paddingTop;
-      for(const i=0;i<lines_1;i++) {
-        drawBlock({
-          width: wPercent(w - paddingLeft - paddingRight), 
-          height: hPercent(textHeight), 
-          top: hPercent(t + (h - textHeight) / 2), 
-          left: isCenter? (w - textWidth) / 2: l + paddingLeft,
-          radius: getStyle(node, 'border-radius')
-        });
-      }
-    }
-    
-  }
-
   function getPadding(node) {
     return {
       paddingTop: parseInt(getStyle(node, 'paddingTop')),
@@ -168,20 +113,17 @@ module.exports = function evalDOM() {
     }
   }
 
-  function parseParams(params) {
-    let options = [];
-    if(params.length) {
-      for(let i in [0, 1]) {
-        let fn = eval('(' + params[i] + ')');
-        if(fn) {
-          options[i] = fn;
-        }
-      }
-      options[2] = params[2];
-      options[3] = params[3];
-      options[4] = params[4];
-    }
-    return options;
+  function parseAgrs(agrs = []) {
+    let params = {};
+    agrs.forEach(agr => {
+      const sep = agr.indexOf(':');
+      const [appName, name, type] = agr.slice(0, sep).split('-');
+      const val = agr.slice(sep + 1);
+      params[name] = type === 'function'? eval('(' + val + ')'): 
+                      type === 'object'? JSON.parse(val):
+                      val;
+    });
+    return params;
   }
 
   function DrawPageframe(opts) {
@@ -208,9 +150,36 @@ module.exports = function evalDOM() {
         height: 100, 
         top: 0, 
         left: 0, 
-        zIndex: 9999990,
+        zIndex: 990,
         background: '#fff'
       });
+      this.withHeader();
+    },
+    inHeader: function(node) {
+      if(agrs.header) {
+        const height = parseInt(agrs.header.height);
+        if(height) {
+          const {t, l, w, h} = getRect(node);
+          return t <= height;
+        }
+      }
+    },
+    withHeader: function() {
+      if(agrs.header) {
+        const {height, background} = agrs.header;
+        const hHeight = parseInt(height);
+        const hBackground = background || agrs.background;
+        if(hHeight) {
+          drawBlock({
+            width: 100, 
+            height: hPercent(hHeight), 
+            top: 0, 
+            left: 0, 
+            zIndex: 999,
+            background: hBackground
+          });
+        }
+      }
     },
     showBlocks: function() {
       if(blocks.length) {
@@ -228,7 +197,7 @@ module.exports = function evalDOM() {
     },
 
     startDraw: function() {
-      let $this = this;
+      const $this = this;
       this.resetDOM();
       const nodes = this.rootNode.childNodes;
       
@@ -252,13 +221,13 @@ module.exports = function evalDOM() {
               }
             }
 
-            if(includeElement(ELEMENTS, node) || 
+            if((includeElement(ELEMENTS, node) || 
               backgroundHasurl ||
               (node.nodeType === 3 && node.textContent.trim().length) || hasChildText ||
-              isCustomCardBlock(node)) {
+              isCustomCardBlock(node)) && !$this.inHeader(node)) {
                 const {t, l, w, h} = getRect(node);
                 
-                if(w > 0 && h > 0 && l >= 0 && l < win_w && t < win_h - 100 && t >= 0 && h < win_h/2) {
+                if(w > 0 && h > 0 && l >= 0 && l < win_w && t < win_h - 100 && t >= 0) {
                   const {
                     paddingTop,
                     paddingLeft,
@@ -273,8 +242,6 @@ module.exports = function evalDOM() {
                     radius: getStyle(node, 'border-radius')
                   });
                 }
-            } else if((node.nodeType === 3 && node.textContent.trim().length) || hasChildText) {
-              // drawTextBlock(node);
             } else if(childNodes && childNodes.length) {
               if(!hasChildText) {
                 deepFindNode(childNodes);
@@ -293,9 +260,9 @@ module.exports = function evalDOM() {
     setTimeout(() => {
       try{
         const html = new DrawPageframe({
-          init: option[0],
-          rootNode: option[4],
-          includeElement: option[1]
+          init: agrs.init,
+          rootNode: agrs.rootNode,
+          includeElement: agrs.includeElement
         }).startDraw();
         resolve(html);
       }catch(e) {

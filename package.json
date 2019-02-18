@@ -1,6 +1,6 @@
 {
   "name": "@nutui/draw-page-structure",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "a way to make skeleton screen",
   "main": "src/index.js",
   "bin": {
@@ -8,12 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/famanoder/DrawPageStructure.git"
+    "url": "git+ssh://git@github.com/famanoder/dps.git"
   },
   "author": "famanoder",
   "license": "MIT",
   "scripts": {
     "start": "node ./bin/dps.js start"
+  },
+  "app": {
+    "alias": "dps"
   },
   "dependencies": {
     "chalk": "^2.4.1",
