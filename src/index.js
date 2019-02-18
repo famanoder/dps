@@ -26,7 +26,7 @@ class DrawPageStructure {
       this.background = background || '#ecf0f2';
       this.animation = animation || '';
       this.rootNode = rootNode || '';
-      this.header = header;
+      this.header = header || '';
       this.device = device;
       this.headless = headless;
       this.extraHTTPHeaders = extraHTTPHeaders;
