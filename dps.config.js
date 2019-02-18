@@ -7,8 +7,8 @@ const dpsConfig = {
 	},
 	background: '#eee',
 	header: {
-		height: 40,
-		background: 'red'
+		height: 50,
+		background: 'rgb(58, 213, 197)'
 	},
 	animation: 'opacity 1s linear infinite;',
 	includeElement: function(node, draw) {
