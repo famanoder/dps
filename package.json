@@ -13,7 +13,13 @@
   "author": "famanoder",
   "license": "MIT",
   "scripts": {
+    "commitmsg": "./node_modules/.bin/commitlint -e $GIT_PARAMS",
     "start": "node ./bin/dps.js start"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    }
   },
   "app": {
     "alias": "dps"
@@ -38,5 +44,9 @@
     "loading",
     "prerender"
   ],
-  "devDependencies": {}
+  "devDependencies": {
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
+    "husky": "^1.3.1"
+  }
 }
