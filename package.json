@@ -13,12 +13,11 @@
   "author": "famanoder",
   "license": "MIT",
   "scripts": {
-    "commitmsg": "./node_modules/.bin/commitlint -e $GIT_PARAMS",
     "start": "node ./bin/dps.js start"
   },
-  "config": {
-    "commitizen": {
-      "path": "cz-customizable"
+  "husky": {
+    "hooks": {
+      "commit-msg": "node ./node_modules/@commitlint/cli/lib/cli.js -E HUSKY_GIT_PARAMS"
     }
   },
   "app": {
