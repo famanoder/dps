@@ -1,5 +1,7 @@
 # dps(draw-page-structure)
+
 > a way to make skeleton screen
+
 * **automatic**: easy to use CLI to make skeleton screen
 * **flexible**: just use javascript even in browser
 * **simple**: some usefull config items do it well
@@ -96,7 +98,7 @@ init: function() {
 * 在浏览器中运行
 
 ```javascript
-const createSkeletonHTML = require('@nutui/draw-page-structure/evalDOM')
+const createSkeletonHTML = require('draw-page-structure/evalDOM')
 
 createSkeletonHTML({
   // ...
