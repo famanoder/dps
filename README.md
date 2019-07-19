@@ -1,4 +1,4 @@
-# dps(DrawPageStructure)
+# dps(draw-page-structure)
 > a way to make skeleton screen
 * **automatic**: easy to use CLI to make skeleton screen
 * **flexible**: just use javascript even in browser
@@ -18,7 +18,7 @@
 ### Install
 ---
 ```bash
-npm i @nutui/draw-page-structure -g
+npm i draw-page-structure -g
 ```
 ### Usage
 ---
