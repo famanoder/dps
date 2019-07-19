@@ -1,10 +1,10 @@
 {
-  "name": "@nutui/draw-page-structure",
-  "version": "0.1.1",
-  "description": "a way to make skeleton screen",
-  "main": "src/index.js",
+  "name": "draw-page-structure",
+  "version": "1.0.1",
+  "description": "a nice tool to make skeleton screen",
+  "main": "src",
   "bin": {
-    "dps": "./bin/dps.js"
+    "dps": "bin/dps.js"
   },
   "repository": {
     "type": "git",
@@ -15,11 +15,7 @@
   "scripts": {
     "start": "node ./bin/dps.js start"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "node ./node_modules/@commitlint/cli/lib/cli.js -E HUSKY_GIT_PARAMS"
-    }
-  },
+  "puppeteer_version": "1.7.0",
   "app": {
     "alias": "dps"
   },
@@ -27,25 +23,21 @@
     "chalk": "^2.4.1",
     "cheerio": "^1.0.0-rc.2",
     "commander": "^2.18.0",
+    "cross-env": "^5.2.0",
+    "fast-install-puppeteer": "^1.0.4",
     "node-emoji": "^1.8.1",
     "ora": "^3.0.0",
-    "prompts": "^1.1.0",
-    "puppeteer": "^1.7.0"
+    "prompts": "^1.1.0"
   },
   "bugs": {
     "url": "https://github.com/famanoder/DrawPageStructure/issues"
   },
   "homepage": "https://github.com/famanoder/DrawPageStructure#readme",
   "keywords": [
-    "nutui",
+    "dps",
     "skeleton screen",
     "skeleton",
     "loading",
     "prerender"
-  ],
-  "devDependencies": {
-    "@commitlint/cli": "^7.5.2",
-    "@commitlint/config-conventional": "^7.5.0",
-    "husky": "^1.3.1"
-  }
+  ]
 }
