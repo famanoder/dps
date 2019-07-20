@@ -24,7 +24,7 @@
     "cheerio": "^1.0.0-rc.2",
     "commander": "^2.18.0",
     "cross-env": "^5.2.0",
-    "fast-install-puppeteer": "^1.0.4",
+    "fast-install-puppeteer": "^1.0.5",
     "node-emoji": "^1.8.1",
     "ora": "^3.0.0",
     "prompts": "^1.1.0"

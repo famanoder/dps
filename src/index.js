@@ -1,7 +1,6 @@
 const fs = require('fs');
-const chalk = require('chalk');
 const cheerio = require('cheerio');
-const { log, getAgrType, Spinner, emoji, calcText, genArgs } = require('./utils');
+const { log, getAgrType, Spinner, calcText, genArgs } = require('./utils');
 const ppteer = require('./pp');
 const evalScripts = require('../evalDOM');
 
@@ -129,16 +128,15 @@ class DrawPageStructure {
 
     if(getAgrType(this.writePageStructure) === 'function') {
       this.writePageStructure(html, this.filepath);
-    }
-    if(this.filepath) {
+    }else if(this.filepath) {
       this.writeToFilepath(html);
+    }else{
+      log.warn('\nskeleton has created, but no way to exported.');
+      log.warn("please check the config 'output, writePageStructure'.");
     }
-
-    console.log('');
-    spinner.stop();
     
-    console.log(' %s ', chalk.green(emoji.get('heavy_check_mark')), `skeleton screen has created and output to ${calcText(this.filepath)}`);
-    console.log(` %s  骨架屏已生成完毕.`, chalk.yellow(emoji.get('coffee')));
+    spinner.text = '骨架屏已生成完毕.';
+    spinner.clear().succeed(`skeleton screen has created and output to ${calcText(this.filepath)}`);
 
     if(this.headless) {
       await pp.browser.close();

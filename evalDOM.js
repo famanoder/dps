@@ -12,19 +12,34 @@ module.exports = function evalDOM() {
     agrs = parseAgrs([...agrs]);
   }
 
-  function drawBlock({width, height, top, left, zIndex = 999, background, radius} = {}) {
-    const styles = [
-      'position: fixed',
-      'z-index: '+zIndex,
-      'top: '+top+'%',
-      'left: '+left+'%',
-      'width: '+width+'%',
-      'height: '+height+'%',
-      'background: '+(background || agrs.background)
-    ];
-    radius && radius != '0px' && styles.push('border-radius: '+ radius);
-    agrs.animation && styles.push('animation: '+ agrs.animation);
-    blocks.push(`<div style="${styles.join(';')}"></div>`);
+  const classProps = {
+    position: 'fixed',
+    zIndex: 999,
+    background: agrs.background
+  }
+  if(agrs.animation) {
+    classProps.animation = agrs.animation;
+  }
+
+  createCommonClass(classProps);
+
+  function drawBlock({width, height, top, left, zIndex = 999, background = agrs.background, radius, subClas} = {}) {
+    const styles = ['height:'+height+'%'];
+
+    if(!subClas) {
+      styles.push('top:'+top+'%', 'left:'+left+'%', 'width:'+width+'%');
+    }
+
+    if(classProps.zIndex !== zIndex) {
+      styles.push('z-index:'+zIndex);
+    }
+
+    if(classProps.background !== background) {
+      styles.push('background:'+background);
+    }
+
+    radius && radius != '0px' && styles.push('border-radius:'+ radius);
+    blocks.push(`<div class="_${subClas? ' __': ''}" style="${styles.join(';')}"></div>`);
   }
 
   function wPercent(x) {
@@ -46,9 +61,12 @@ module.exports = function evalDOM() {
   }
 
   function getRootNode(el) {
-    if(el && getArgtype(el) === 'string') {
-      return document.querySelector(el);
-    }
+    if(!el) return el;
+    return typeof el === 'object' ?
+            el:
+            (getArgtype(el) === 'string' ?
+            document.querySelector(el):
+            null);
   }
 
   function includeElement(elements, node) {
@@ -113,6 +131,15 @@ module.exports = function evalDOM() {
     }
   }
 
+  function createCommonClass(props) {
+    const inlineStyle = ['<style>._{'];
+    for(let prop in props) {
+      inlineStyle.push(`${prop === 'zIndex'? 'z-index': prop}:${props[prop]};`);
+    }
+    inlineStyle.push('}.__{top:0%;left:0%;width:100%;}</style>');
+    blocks.push(inlineStyle.join(''));
+  }
+
   function parseAgrs(agrs = []) {
     let params = {};
     agrs.forEach(agr => {
@@ -146,12 +173,10 @@ module.exports = function evalDOM() {
       window.scrollTo(0, this.offsetTop);
       document.body.style.cssText += 'overflow:hidden!important;';
       drawBlock({
-        width: 100, 
         height: 100, 
-        top: 0, 
-        left: 0, 
         zIndex: 990,
-        background: '#fff'
+        background: '#fff',
+        subClas: true
       });
       this.withHeader();
     },
@@ -171,12 +196,10 @@ module.exports = function evalDOM() {
         const hBackground = background || agrs.background;
         if(hHeight) {
           drawBlock({
-            width: 100, 
             height: hPercent(hHeight), 
-            top: 0, 
-            left: 0, 
             zIndex: 999,
-            background: hBackground
+            background: hBackground,
+            subClas: true
           });
         }
       }

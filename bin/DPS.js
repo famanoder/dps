@@ -12,7 +12,8 @@ const utils = require('../src/utils')
   program
   .version(pkg.version)
   .usage('<command> [options]')
-  .option('-v, --version', 'latest version');
+  .option('-v, --version', 'latest version')
+  .option('-tar, --target <tar>', 'same to the config of url@rootNode.');
 
   program
   .command('init')
@@ -53,15 +54,50 @@ const utils = require('../src/utils')
   .command('start')
   .description('start create a skeleton screen')
   .action(function() {
-    const dpsConfFile = path.resolve(process.cwd(), defConf.filename)
-    if(!fs.existsSync(dpsConfFile)) {
-      utils.log.error(`please run 'dps init' to initialize a config file`, 1)
-    }
-    new DrawPageStructure(require(dpsConfFile)).start()
+    new DrawPageStructure(getDpsconfig()).start();
   });
+
+  program
+  .command('create')
+  .description('create a skeleton screen component(vue or react or html)')
+  .action(function() {
+    console.log(123)
+    // const dpsConfFile = path.resolve(process.cwd(), defConf.filename)
+    // if(!fs.existsSync(dpsConfFile)) {
+    //   utils.log.error(`please run 'dps init' to initialize a config file`, 1)
+    // }
+    // new DrawPageStructure(require(dpsConfFile)).start()
+  });
+  // dps create:vue --
 
   program.parse(process.argv);
   if (program.args.length < 1) program.help()
+
+function getDpsconfig() {
+  const dpsConfFile = path.resolve(process.cwd(), defConf.filename)
+  if(!fs.existsSync(dpsConfFile)) {
+    return utils.log.error(`please run 'dps init' to initialize a config file`, 1)
+  }
+  return require(dpsConfFile);
+}
+
+function createCmd(type) {
+  const [url, rootNode] = (program.target || '').split('@');
+  const config = getDpsconfig();
+  if(url) {}
+
+  program
+  .command(`create:${type}`)
+  .description('create a skeleton screen component(vue or react or html)')
+  .action(function() {
+    console.log(123)
+    // const dpsConfFile = path.resolve(process.cwd(), defConf.filename)
+    // if(!fs.existsSync(dpsConfFile)) {
+    //   utils.log.error(`please run 'dps init' to initialize a config file`, 1)
+    // }
+    // new DrawPageStructure(require(dpsConfFile)).start()
+  });
+}
 
 function askForConfig() {
   const questions = [

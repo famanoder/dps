@@ -36,6 +36,10 @@ log.error = function(msg, exit) {
   exit && process.exit(0);
 }
 
+log.warn = function(msg) {
+  log(chalk.yellow(msg));
+}
+
 log.info = function(msg) {
   log(chalk.greenBright(msg));
 }

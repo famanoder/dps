@@ -166,10 +166,10 @@ escape-string-regexp@^1.0.5:
   resolved "https://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-fast-install-puppeteer@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/fast-install-puppeteer/-/fast-install-puppeteer-1.0.4.tgz#16b18f8b46b700e87fde80248d2cc1ee42ea775a"
-  integrity sha512-UZmXS+RG2/+K85GUuBxiHRnWubUg2eiUJGK1PvsHMe11LH+i/67MulB5GIUetMK78KzOF0bzEK9MLSVMgkbVmg==
+fast-install-puppeteer@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/fast-install-puppeteer/-/fast-install-puppeteer-1.0.5.tgz#7b4e92c609eadb969d0bca3e365a05211813119f"
+  integrity sha512-lWmQkpPpb+ng8X7wggVNZ7FvAPHa9CWcMiTFyMZ9Zv/0k38um4BLceVnFEnu86Jpn71sYs7XAOTLKximtPIUuA==
   dependencies:
     chalk "^2.4.2"
     cross-env "^5.2.0"
