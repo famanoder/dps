@@ -31,12 +31,12 @@ const dpsConfig = {
 			// return false;
 		// } 
 	},
-	writePageStructure: function(html) {
+	// writePageStructure: function(html) {
 		// 自己处理生成的骨架屏
 		// fs.writeFileSync(filepath, html);
 		// console.log(html)
-	},
-	headless: false,
+	// },
+	headless: true,
 	init: function() {
 		// 生成骨架屏之前的操作，比如删除干扰节点
 	}

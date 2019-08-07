@@ -125,12 +125,17 @@ class DrawPageStructure {
 
     spinner.text = '正在生成骨架屏...';
     const html = await this.generateSkeletonHTML(page);
+    const userWrite = getAgrType(this.writePageStructure) === 'function';
 
-    if(getAgrType(this.writePageStructure) === 'function') {
+    if(userWrite) {
       this.writePageStructure(html, this.filepath);
-    }else if(this.filepath) {
+    }
+
+    if(this.filepath) {
       this.writeToFilepath(html);
-    }else{
+    }
+
+    if(!userWrite && !this.filepath){
       log.warn('\nskeleton has created, but no way to exported.');
       log.warn("please check the config 'output, writePageStructure'.");
     }

@@ -11,7 +11,7 @@ const dpsConfig = {
 	},
 	background: '#eee',
 	animation: 'opacity 1s linear infinite;',
-	includeElement: function(node, draw) {
+	// includeElement: function(node, draw) {
 		// 定制某个节点画出来的样子，带上return false
 		// if(node.id == 'ui-alert') {
 			// 跳过该节点及其子节点
@@ -29,12 +29,12 @@ const dpsConfig = {
 			// });
 			// return false;
 		// } 
-	},
-	writePageStructure: function(html) {
+	// },
+	// writePageStructure: function(html) {
 		// 自己处理生成的骨架屏
 		// fs.writeFileSync(filepath, html);
 		// console.log(html)
-	},
+	// },
 	init: function() {
 		// 生成骨架屏之前的操作，比如删除干扰节点
 	}
