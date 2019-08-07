@@ -1,6 +1,6 @@
 {
   "name": "draw-page-structure",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a nice tool to make skeleton screen",
   "main": "src",
   "bin": {
