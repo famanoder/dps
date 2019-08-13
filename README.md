@@ -17,6 +17,14 @@
 
 ![](https://raw.githubusercontent.com/famanoder/DrawPageStructure/master/imgs/ezgif.com-resize.gif)
 
+### Before start
+---
+我们提供两种方法来盛放生成的骨架屏节点：
+
+1. 配置 `output.filepath`，如果配置的是目录，会写入到该目录里的 `index.html` (没有的话我们会创建)文件里；
+2. 自定义写入的方式 `writePageStructure: (outputHtml: string) => void;`；
+3. 如果前面两种方式您都没有提供，那么将会在您当前目录下创建 `index.html` ，并将骨架屏节点写入；
+
 ### Install
 ---
 ```bash
@@ -24,9 +32,9 @@ npm i draw-page-structure -g
 ```
 ### Usage
 ---
-1. `dps init`生成配置文件`dps.config.js`
-2. 修改`dps.config.js`进行相关配置
-3. `dps start`开始生成骨架屏
+1. `dps init` 生成配置文件 `dps.config.js`
+2. 修改 `dps.config.js` 进行相关配置
+3. `dps start` 开始生成骨架屏
 
 ### Examples
 
@@ -93,7 +101,7 @@ init: function() {
 }
 ```
 
-> 对于DOM结构比较复杂和图片比较多且分布密集的情况生成的骨架屏效果可能不尽如人意，这时候可以使用`includeElement`定制某个节点生成生成什么样子，或者使用`init`在生成骨架屏之前对DOM节点进行调整，这两个函数在面对相对复杂的DOM结构时会比较有用；
+> 对于DOM结构比较复杂和图片比较多且分布密集的情况生成的骨架屏效果可能不尽如人意，这时候可以使用 `includeElement` 定制某个节点生成生成什么样子，或者使用 `init` 在生成骨架屏之前对DOM节点进行调整，这两个函数在面对相对复杂的DOM结构时会比较有用；
 
 * 在浏览器中运行
 
@@ -127,4 +135,4 @@ createSkeletonHTML({
 | extraHTTPHeaders | 添加请求头 | -- | 否
 | init | 开始生成之前的操作 | -- | 否
 | includeElement(node, draw) | 定制某个节点如何生成 | -- | 否
-| writePageStructure(html, filepath) | 回调的骨架屏节点 | -- | 否
+| writePageStructure(html, ?filepath) | 回调的骨架屏节点 | -- | 否

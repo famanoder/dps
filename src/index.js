@@ -1,8 +1,12 @@
 const fs = require('fs');
+const path = require('path');
 const cheerio = require('cheerio');
 const { log, getAgrType, Spinner, calcText, genArgs } = require('./utils');
 const ppteer = require('./pp');
+const defaultHtml = require('./default.html');
 const evalScripts = require('../evalDOM');
+
+const currDir = process.cwd();
 
 class DrawPageStructure {
   constructor({
@@ -19,9 +23,10 @@ class DrawPageStructure {
       includeElement,
       init
     } = {}) {
+      let filepath = !output.filepath || path.isAbsolute(output.filepath) ? output.filepath : path.join(currDir, output.filepath);
       this.url = url;
-      this.filepath = output.filepath;
-      this.injectSelector = output.injectSelector || '#app';
+      this.filepath = filepath;
+      this.injectSelector = output.injectSelector || 'body';
       this.background = background || '#ecf0f2';
       this.animation = animation || '';
       this.rootNode = rootNode || '';
@@ -38,17 +43,24 @@ class DrawPageStructure {
       if(!url) {
         log.error('please provide entry url !', 1); 
       }
-      if(!output.filepath) {
-        log.error('please provide output filepath !', 1); 
-      }
+      // if(!output.filepath) {
+      //   log.error('please provide output filepath !', 1); 
+      // }
       if(header && getAgrType(header) !== 'object') {
         log.error('[header] should be an object !', 1);
       }
-      if(!fs.existsSync(output.filepath) || !fs.statSync(output.filepath).isFile()) {
-        log.error('[output.filepath] should be a file !', 1); 
-      }
-      if(!fs.existsSync(output.filepath)) {
-        log.error('[output.filepath:404] please provide the absolute filepath !', 1); 
+
+      if(filepath) {
+        if(!fs.existsSync(filepath)) {
+          log.error('[output.filepath:404] please provide the output filepath !', 1); 
+        }else{
+          const fileStat = fs.statSync(filepath);
+          if(fileStat.isDirectory()) {
+            filepath = path.join(filepath, 'index.html');
+            fs.writeFileSync(filepath, defaultHtml);
+            this.filepath = filepath;
+          }
+        }
       }
   }
   async generateSkeletonHTML(page) {
@@ -97,12 +109,11 @@ class DrawPageStructure {
       log.error('\n[page.evaluate] ' + e.message);
     }
     // await page.screenshot({path: 'example.png'});
-    // let base64 = fs.readFileSync(path.resolve(__dirname, '../example.png')).toString('base64');
+    // let base64 = fs.readFileSync(path.resolve(currDir, '../example.png')).toString('base64');
     return html;
 
   }
-  writeToFilepath(html) {
-    let filepath = this.filepath;
+  writeToFilepath(filepath, html) {
     let fileHTML = fs.readFileSync(filepath);
     let $ = cheerio.load(fileHTML, {
       decodeEntities: false
@@ -132,15 +143,18 @@ class DrawPageStructure {
     }
 
     if(this.filepath) {
-      this.writeToFilepath(html);
+      this.writeToFilepath(this.filepath, html);
     }
 
     if(!userWrite && !this.filepath){
-      log.warn('\nskeleton has created, but no way to exported.');
-      log.warn("please check the config 'output, writePageStructure'.");
+      const defaultPage = path.join(currDir, 'index.html');
+      fs.writeFileSync(defaultPage, defaultHtml);
+      this.writeToFilepath(defaultPage, html);
+      this.filepath = defaultPage;
+      spinner.clear();
+      log.warn(`\nskeleton has created in a default page: ${defaultPage}`);
     }
     
-    spinner.text = '骨架屏已生成完毕.';
     spinner.clear().succeed(`skeleton screen has created and output to ${calcText(this.filepath)}`);
 
     if(this.headless) {

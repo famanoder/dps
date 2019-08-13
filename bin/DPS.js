@@ -9,6 +9,8 @@ const defConf = require('./default.config')
 const DrawPageStructure = require('../src')
 const utils = require('../src/utils')
 
+const currDir = process.cwd()
+
   program
   .version(pkg.version)
   .usage('<command> [options]')
@@ -19,25 +21,25 @@ const utils = require('../src/utils')
   .command('init')
   .description('create a default dps.config.js file')
   .action(function(env, options) {
-    const dpsConfFile = path.resolve(process.cwd(), defConf.filename)
+    const dpsConfFile = path.resolve(currDir, defConf.filename)
     if(fs.existsSync(dpsConfFile)) {
       return console.log(`\n[${defConf.filename}] had been created! you can edit it and then run 'dps start'\n`)
     }
-    askForConfig().then(ans => {
-      const outputPath = path.resolve(process.cwd(), ans.filepath).replace(/\\/g, '\\\\')
+    askForConfig().then(({url, filepath}) => {
+      const outputPath = filepath ? path.resolve(currDir, filepath).replace(/\\/g, '\\\\') : '';
       prompts({
         type: 'toggle',
         name: 'value',
-        message: `Are you sure to create skeleton screen base on ${ans.url}. \n and will output to ${utils.calcText(outputPath)}`,
+        message: `Are you sure to create skeleton screen base on ${url}. \n and will output to ${utils.calcText(outputPath)}`,
         initial: true,
         active: 'Yes',
         inactive: 'no'
       }).then(res => {
         if(res.value) {
           fs.writeFile(
-            path.resolve(process.cwd(), defConf.filename), 
+            path.resolve(currDir, defConf.filename), 
             defConf.getTemplate({
-              url: ans.url,
+              url: url,
               filepath: outputPath
             }),
             err => {
@@ -62,7 +64,7 @@ const utils = require('../src/utils')
   .description('create a skeleton screen component(vue or react or html)')
   .action(function() {
     console.log(123)
-    // const dpsConfFile = path.resolve(process.cwd(), defConf.filename)
+    // const dpsConfFile = path.resolve(currDir, defConf.filename)
     // if(!fs.existsSync(dpsConfFile)) {
     //   utils.log.error(`please run 'dps init' to initialize a config file`, 1)
     // }
@@ -74,7 +76,7 @@ const utils = require('../src/utils')
   if (program.args.length < 1) program.help()
 
 function getDpsconfig() {
-  const dpsConfFile = path.resolve(process.cwd(), defConf.filename)
+  const dpsConfFile = path.resolve(currDir, defConf.filename)
   if(!fs.existsSync(dpsConfFile)) {
     return utils.log.error(`please run 'dps init' to initialize a config file`, 1)
   }
@@ -91,7 +93,7 @@ function createCmd(type) {
   .description('create a skeleton screen component(vue or react or html)')
   .action(function() {
     console.log(123)
-    // const dpsConfFile = path.resolve(process.cwd(), defConf.filename)
+    // const dpsConfFile = path.resolve(currDir, defConf.filename)
     // if(!fs.existsSync(dpsConfFile)) {
     //   utils.log.error(`please run 'dps init' to initialize a config file`, 1)
     // }
@@ -117,13 +119,15 @@ function askForConfig() {
     {
       type: 'text',
       name: 'filepath',
-      message: "Enter a relative output filepath ?",
+      message: "Enter a relative output filepath ? (optional)",
       validate: function(value) {
-        if(!value) {
-          return 'Please enter a filepath'
-        }else{
-          return true;
+        const filepath = path.isAbsolute(value) ? value : path.join(__dirname, value);
+        const exists = fs.existsSync(filepath);
+        
+        if(value && !exists) {
+          return 'Please enter a exists target';
         }
+        return true;
       }
     }
   ];
