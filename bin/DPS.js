@@ -59,17 +59,6 @@ const currDir = process.cwd()
     new DrawPageStructure(getDpsconfig()).start();
   });
 
-  program
-  .command('create')
-  .description('create a skeleton screen component(vue or react or html)')
-  .action(function() {
-    console.log(123)
-    // const dpsConfFile = path.resolve(currDir, defConf.filename)
-    // if(!fs.existsSync(dpsConfFile)) {
-    //   utils.log.error(`please run 'dps init' to initialize a config file`, 1)
-    // }
-    // new DrawPageStructure(require(dpsConfFile)).start()
-  });
   // dps create:vue --
 
   program.parse(process.argv);
@@ -83,23 +72,23 @@ function getDpsconfig() {
   return require(dpsConfFile);
 }
 
-function createCmd(type) {
-  const [url, rootNode] = (program.target || '').split('@');
-  const config = getDpsconfig();
-  if(url) {}
+// function createCmd(type) {
+//   const [url, rootNode] = (program.target || '').split('@');
+//   const config = getDpsconfig();
+//   if(url) {}
 
-  program
-  .command(`create:${type}`)
-  .description('create a skeleton screen component(vue or react or html)')
-  .action(function() {
-    console.log(123)
-    // const dpsConfFile = path.resolve(currDir, defConf.filename)
-    // if(!fs.existsSync(dpsConfFile)) {
-    //   utils.log.error(`please run 'dps init' to initialize a config file`, 1)
-    // }
-    // new DrawPageStructure(require(dpsConfFile)).start()
-  });
-}
+//   program
+//   .command(`create:${type}`)
+//   .description('create a skeleton screen component(vue or react or html)')
+//   .action(function() {
+//     console.log(123)
+//     // const dpsConfFile = path.resolve(currDir, defConf.filename)
+//     // if(!fs.existsSync(dpsConfFile)) {
+//     //   utils.log.error(`please run 'dps init' to initialize a config file`, 1)
+//     // }
+//     // new DrawPageStructure(require(dpsConfFile)).start()
+//   });
+// }
 
 function askForConfig() {
   const questions = [
