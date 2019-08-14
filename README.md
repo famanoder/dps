@@ -125,12 +125,13 @@ createSkeletonHTML({
 | 参数 | 说明 | 默认值 | 是否必填
 |----- | ----- | ----- | -----
 | url | 待生成骨架屏的页面地址 | -- | 是
-| output.filepath | 生成的骨架屏节点写入的文件 | -- | 是
+| output.filepath | 生成的骨架屏节点写入的文件 | -- | 否
 | output.injectSelector | 骨架屏节点插入的位置 | #app | 否
-| rootNode | 针对局部生成骨架屏 | document.body | 否
+| header.height | 主题header的高 | -- | 否
+| header.background | 主题header的背景色 | -- | 否
 | background | 骨架屏主题色 | #ecf0f2 | 否
 | animation | css3动画属性 | -- | 否
-| rootNode | 真对某个模块生成骨架屏 | document.body | 否
+| rootNode | 真对某个模块生成骨架屏 | document.body | 否-已废弃
 | device | 设备类型 | mobile | 否
 | extraHTTPHeaders | 添加请求头 | -- | 否
 | init | 开始生成之前的操作 | -- | 否

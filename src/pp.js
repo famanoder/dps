@@ -22,6 +22,7 @@ async function pp({device = 'mobile', headless = true}) {
         await page.setExtraHTTPHeaders(new Map(Object.entries(extraHTTPHeaders)));
       }
       await page.goto(url, {
+        timeout: 2 * 60 * 1000,
         waitUntil: 'networkidle0'
       });
     }catch(e){

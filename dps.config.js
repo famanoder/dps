@@ -1,10 +1,14 @@
 
 const dpsConfig = {
-	url: 'http://baidu.com',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
+	url: 'https://baidu.com',      // 待生成骨架屏页面的地址，用百度（https://baidu.com）试试也可以
 	output: {
 		filepath: '',   // 生成骨架屏的存放页面，一般为项目的入口页面
 		injectSelector: '#app'  // 生成的骨架屏插入页面的节点
 	},
+	// header: {
+	// 	height: 40,
+	// 	background: '#3388ff'
+	// },
 	// background: '#eee',
 	// animation: 'opacity 1s linear infinite;',
 	// includeElement: function(node, draw) {
@@ -32,10 +36,9 @@ const dpsConfig = {
 		// console.log(html)
 	// },
 	init: function() {
+		// document.querySelectorAll('.m-icon').forEach(item => item.parentNode.removeChild(item));
 		// 生成骨架屏之前的操作，比如删除干扰节点
 	}
 }
 
 module.exports = dpsConfig;
-
-		

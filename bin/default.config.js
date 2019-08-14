@@ -9,6 +9,10 @@ const dpsConfig = {
 		filepath: '${conf.filepath.toString()}',   // 生成骨架屏的存放页面，一般为项目的入口页面
 		injectSelector: '#app'  // 生成的骨架屏插入页面的节点
 	},
+	// header: {
+	// 	height: 40,
+	// 	background: '#1b9af4'
+	// },
 	// background: '#eee',
 	// animation: 'opacity 1s linear infinite;',
 	// includeElement: function(node, draw) {
