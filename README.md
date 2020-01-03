@@ -1,5 +1,7 @@
 # dps(draw-page-structure)
 
+![NPM](https://img.shields.io/npm/l/draw-page-structure)
+![npm (tag)](https://img.shields.io/npm/v/draw-page-structure/latest)
 [![Package Quality](https://npm.packagequality.com/shield/draw-page-structure.svg)](https://packagequality.com/#?package=draw-page-structure)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/famanoder/dps/pulls)
 
