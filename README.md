@@ -1,5 +1,8 @@
 # dps(draw-page-structure)
 
+[![Package Quality](https://npm.packagequality.com/shield/draw-page-structure.svg)](https://packagequality.com/#?package=draw-page-structure)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/famanoder/dps/pulls)
+
 > a way to make skeleton screen
 
 * **automatic**: easy to use CLI to make skeleton screen
