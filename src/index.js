@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
-const { log, getAgrType, Spinner, calcText, genArgs } = require('./utils');
 const ppteer = require('./pp');
 const defaultHtml = require('./default.html');
 const evalScripts = require('../evalDOM');
+const { log, getAgrType, Spinner, calcText, genArgs } = require('./utils');
 
 const currDir = process.cwd();
 
@@ -38,24 +38,19 @@ class DrawPageStructure {
       this.includeElement = includeElement || function() {};
       this.init = init || function() {};
 
-      if(this.headless === undefined) this.headless = true;
-
-      if(!url) {
+      if (this.headless === undefined) this.headless = true;
+      if (!url) {
         log.error('please provide entry url !', 1); 
       }
-      // if(!output.filepath) {
-      //   log.error('please provide output filepath !', 1); 
-      // }
-      if(header && getAgrType(header) !== 'object') {
+      if (header && getAgrType(header) !== 'object') {
         log.error('[header] should be an object !', 1);
       }
-
-      if(filepath) {
-        if(!fs.existsSync(filepath)) {
+      if (filepath) {
+        if (!fs.existsSync(filepath)) {
           log.error('[output.filepath:404] please provide the output filepath !', 1); 
-        }else{
+        } else {
           const fileStat = fs.statSync(filepath);
-          if(fileStat.isDirectory()) {
+          if (fileStat.isDirectory()) {
             filepath = path.join(filepath, 'index.html');
             fs.writeFileSync(filepath, defaultHtml);
             this.filepath = filepath;
@@ -66,7 +61,7 @@ class DrawPageStructure {
   async generateSkeletonHTML(page) {
     let html = '';
 
-    try{
+    try {
       // html = await page.evaluate.call(
       //   page, 
       //   evalScripts, 
@@ -105,13 +100,10 @@ class DrawPageStructure {
       });
       agrs.unshift(evalScripts);
       html = await page.evaluate.apply(page, agrs);
-    }catch(e){
+    } catch (e) {
       log.error('\n[page.evaluate] ' + e.message);
     }
-    // await page.screenshot({path: 'example.png'});
-    // let base64 = fs.readFileSync(path.resolve(currDir, '../example.png')).toString('base64');
     return html;
-
   }
   writeToFilepath(filepath, html) {
     let fileHTML = fs.readFileSync(filepath);
@@ -138,15 +130,15 @@ class DrawPageStructure {
     const html = await this.generateSkeletonHTML(page);
     const userWrite = getAgrType(this.writePageStructure) === 'function';
 
-    if(userWrite) {
+    if (userWrite) {
       this.writePageStructure(html, this.filepath);
     }
 
-    if(this.filepath) {
+    if (this.filepath) {
       this.writeToFilepath(this.filepath, html);
     }
 
-    if(!userWrite && !this.filepath){
+    if (!userWrite && !this.filepath) {
       const defaultPage = path.join(currDir, 'index.html');
       fs.writeFileSync(defaultPage, defaultHtml);
       this.writeToFilepath(defaultPage, html);
@@ -157,7 +149,7 @@ class DrawPageStructure {
     
     spinner.clear().succeed(`skeleton screen has created and output to ${calcText(this.filepath)}`);
 
-    if(this.headless) {
+    if (this.headless) {
       await pp.browser.close();
       process.exit(0);
     }

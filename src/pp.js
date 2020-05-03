@@ -1,5 +1,4 @@
 const ppteer = require('fast-install-puppeteer');
-
 const { log, getAgrType } = require('./utils');
 
 const devices = {
@@ -13,7 +12,7 @@ async function pp({device = 'mobile', headless = true}) {
   
   async function openPage(url, extraHTTPHeaders) {
     const page = await browser.newPage();
-    try{
+    try {
       let deviceSet = devices[device];
       page.setUserAgent(deviceSet[2]);
       page.setViewport({width: deviceSet[0], height: deviceSet[1]});
@@ -25,7 +24,7 @@ async function pp({device = 'mobile', headless = true}) {
         timeout: 2 * 60 * 1000,
         waitUntil: 'networkidle0'
       });
-    }catch(e){
+    } catch (e) {
       console.log('\n');
       log.error(e.message);
     }

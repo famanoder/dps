@@ -5,10 +5,10 @@ module.exports = function evalDOM() {
   const win_h = window.innerHeight;
 
   let agrs = arguments;
-  if(!agrs.length) agrs = {length: 1, 0: {}};
+  if (!agrs.length) agrs = {length: 1, 0: {}};
   let agrs0 = agrs[0];
   
-  if(agrs.length !== 1 || getArgtype(agrs0) !== 'object') {
+  if (agrs.length !== 1 || getArgtype(agrs0) !== 'object') {
     agrs = parseAgrs([...agrs]);
   }
 
@@ -17,51 +17,51 @@ module.exports = function evalDOM() {
     zIndex: 999,
     background: agrs.background
   }
-  if(agrs.animation) {
+  if (agrs.animation) {
     classProps.animation = agrs.animation;
   }
 
   createCommonClass(classProps);
 
   function drawBlock({width, height, top, left, zIndex = 999, background = agrs.background, radius, subClas} = {}) {
-    const styles = ['height:'+height+'%'];
+    const styles = ['height:' + height + '%'];
 
-    if(!subClas) {
-      styles.push('top:'+top+'%', 'left:'+left+'%', 'width:'+width+'%');
+    if (!subClas) {
+      styles.push('top:' + top + '%', 'left:' + left + '%', 'width:' + width + '%');
     }
 
-    if(classProps.zIndex !== zIndex) {
-      styles.push('z-index:'+zIndex);
+    if (classProps.zIndex !== zIndex) {
+      styles.push('z-index:' + zIndex);
     }
 
-    if(classProps.background !== background) {
-      styles.push('background:'+background);
+    if (classProps.background !== background) {
+      styles.push('background:' + background);
     }
 
-    radius && radius != '0px' && styles.push('border-radius:'+ radius);
-    blocks.push(`<div class="_${subClas? ' __': ''}" style="${styles.join(';')}"></div>`);
+    radius && radius != '0px' && styles.push('border-radius:' + radius);
+    blocks.push(`<div class="_${subClas ? ' __' : ''}" style="${styles.join(';')}"></div>`);
   }
 
   function wPercent(x) {
-    return parseFloat(x/win_w*100).toFixed(3);
+    return parseFloat(x / win_w * 100).toFixed(3);
   }
   
   function hPercent(x) {
-    return parseFloat(x/win_h*100).toFixed(3);
+    return parseFloat(x / win_h * 100).toFixed(3);
   }
 
   function noop() {}
 
-  function getArgtype(arg){
+  function getArgtype(arg) {
     return Object.prototype.toString.call(arg).toLowerCase().match(/\s(\w+)/)[1];
   }
 
   function getStyle(node, attr) {
-    return (node.nodeType === 1? getComputedStyle(node)[attr]: '') || '';
+    return (node.nodeType === 1 ? getComputedStyle(node)[attr] : '') || '';
   }
 
   function getRootNode(el) {
-    if(!el) return el;
+    if (!el) return el;
     return typeof el === 'object' ?
             el:
             (getArgtype(el) === 'string' ?
@@ -86,7 +86,7 @@ module.exports = function evalDOM() {
     const bdReg = /(0px)|(none)/;
     const hasBgColor = !bgColorReg.test(bgStyle) || ~bgStyle.indexOf('gradient');
     const hasNoBorder = ['top', 'left', 'right', 'bottom'].some(item => {
-      return bdReg.test(getStyle(node, 'border-'+item));
+      return bdReg.test(getStyle(node, 'border-' + item));
     });
     const {w, h} = getRect(node);
     const customCardBlock = !!(hasBgColor && (!hasNoBorder || getStyle(node, 'box-shadow') != 'none') && w > 0 && h > 0 && w < 0.95*win_w && h < 0.3*win_h);
@@ -94,7 +94,7 @@ module.exports = function evalDOM() {
   }
 
   function calcTextWidth(text, {fontSize, fontWeight} = {}) {
-    if(!text) return 0;
+    if (!text) return 0;
 
     const div = document.createElement('div');
     div.innerHTML = text;
@@ -117,7 +117,7 @@ module.exports = function evalDOM() {
   }
 
   function getRect(node) {
-    if(!node) return {};
+    if (!node) return {};
     const { top: t, left: l, width: w, height: h } = node.getBoundingClientRect();
     return {t, l, w, h};
   }
@@ -160,7 +160,7 @@ module.exports = function evalDOM() {
     this.init = opts.init;
     this.originStyle = {};
 
-    return this instanceof DrawPageframe? this: new DrawPageframe(opts); 
+    return this instanceof DrawPageframe ? this : new DrawPageframe(opts); 
   }
 
   DrawPageframe.prototype = {
@@ -181,20 +181,20 @@ module.exports = function evalDOM() {
       this.withHeader();
     },
     inHeader: function(node) {
-      if(agrs.header) {
+      if (agrs.header) {
         const height = parseInt(agrs.header.height);
-        if(height) {
+        if (height) {
           const {t, l, w, h} = getRect(node);
           return t <= height;
         }
       }
     },
     withHeader: function() {
-      if(agrs.header) {
+      if (agrs.header) {
         const {height, background} = agrs.header;
         const hHeight = parseInt(height);
         const hBackground = background || agrs.background;
-        if(hHeight) {
+        if (hHeight) {
           drawBlock({
             height: hPercent(hHeight), 
             zIndex: 999,
@@ -205,7 +205,7 @@ module.exports = function evalDOM() {
       }
     },
     showBlocks: function() {
-      if(blocks.length) {
+      if (blocks.length) {
         const { body } = document;
         const blocksHTML = blocks.join('');
         const div = document.createElement('div');
@@ -225,11 +225,11 @@ module.exports = function evalDOM() {
       const nodes = this.rootNode.childNodes;
       
       function deepFindNode(nodes) {
-        if(nodes.length) {
+        if (nodes.length) {
           for(let i = 0; i < nodes.length; i++) {
             
             let node = nodes[i];
-            if(isHideStyle(node) || (getArgtype($this.includeElement) === 'function' && $this.includeElement(node, drawBlock) == false)) continue;
+            if (isHideStyle(node) || (getArgtype($this.includeElement) === 'function' && $this.includeElement(node, drawBlock) == false)) continue;
             let childNodes = node.childNodes;
             let hasChildText = false;
             let background = getStyle(node, 'backgroundImage');
@@ -238,19 +238,19 @@ module.exports = function evalDOM() {
             backgroundHasurl = backgroundHasurl && backgroundHasurl.length;
 
             for(let j = 0; j < childNodes.length; j++) {
-              if(childNodes[j].nodeType === 3 && childNodes[j].textContent.trim().length) {
+              if (childNodes[j].nodeType === 3 && childNodes[j].textContent.trim().length) {
                 hasChildText = true;
                 break;
               }
             }
 
-            if((includeElement(ELEMENTS, node) || 
+            if ((includeElement(ELEMENTS, node) || 
               backgroundHasurl ||
               (node.nodeType === 3 && node.textContent.trim().length) || hasChildText ||
               isCustomCardBlock(node)) && !$this.inHeader(node)) {
                 const {t, l, w, h} = getRect(node);
                 
-                if(w > 0 && h > 0 && l >= 0 && l < win_w && t < win_h - 100 && t >= 0) {
+                if (w > 0 && h > 0 && l >= 0 && l < win_w && win_h - t >= 20 && t >= 0) {
                   const {
                     paddingTop,
                     paddingLeft,
@@ -265,8 +265,8 @@ module.exports = function evalDOM() {
                     radius: getStyle(node, 'border-radius')
                   });
                 }
-            } else if(childNodes && childNodes.length) {
-              if(!hasChildText) {
+            } else if (childNodes && childNodes.length) {
+              if (!hasChildText) {
                 deepFindNode(childNodes);
               }
             }
@@ -281,21 +281,17 @@ module.exports = function evalDOM() {
 
   return new Promise((resolve, reject) => {   
     setTimeout(() => {
-      try{
+      try {
         const html = new DrawPageframe({
           init: agrs.init,
           rootNode: agrs.rootNode,
           includeElement: agrs.includeElement
         }).startDraw();
         resolve(html);
-      }catch(e) {
+      } catch (e) {
         reject(e);
       }
     }, 1000);
   }); 
 
 }
-
-// 待优化：
-// 1. table
-// 2. 文字
