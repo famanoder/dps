@@ -4,12 +4,13 @@ module.exports = function evalDOM() {
   const win_w = window.innerWidth;
   const win_h = window.innerHeight;
 
-  let agrs = arguments;
-  if (!agrs.length) agrs = {length: 1, 0: {}};
-  let agrs0 = agrs[0];
+  let agrsArr = arguments;
+  console.log("arguments=", arguments)
+  if (!agrsArr.length) agrsArr = {length: 1, 0: {}};
+  let agrs = agrsArr[0];
   
-  if (agrs.length !== 1 || getArgtype(agrs0) !== 'object') {
-    agrs = parseAgrs([...agrs]);
+  if (agrsArr.length !== 1 || getArgtype(agrs) !== 'object') {
+    agrs = parseAgrs([...agrsArr]);
   }
 
   const classProps = {
