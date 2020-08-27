@@ -137,7 +137,7 @@ createSkeletonHTML({
 | background | 骨架屏主题色 | #ecf0f2 | 否
 | animation | css3动画属性 | -- | 否
 | rootNode | 真对某个模块生成骨架屏 | document.body | 否-已废弃
-| device | 设备类型 | mobile | 否
+| device | 设备类型，支持mobile, ipad, pc | mobile | 否
 | extraHTTPHeaders | 添加请求头 | -- | 否
 | init | 开始生成之前的操作 | -- | 否
 | includeElement(node, draw) | 定制某个节点如何生成 | -- | 否
