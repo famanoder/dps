@@ -5,7 +5,6 @@ module.exports = function evalDOM() {
   const win_h = window.innerHeight;
 
   let agrsArr = arguments;
-  console.log("arguments=", arguments)
   if (!agrsArr.length) agrsArr = {length: 1, 0: {}};
   let agrs = agrsArr[0];
   
