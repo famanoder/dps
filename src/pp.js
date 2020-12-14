@@ -18,7 +18,7 @@ async function pp({device = 'mobile', headless = true}) {
       page.setViewport({width: deviceSet[0], height: deviceSet[1]});
 
       if(extraHTTPHeaders && getAgrType(extraHTTPHeaders) === 'object') {
-        await page.setExtraHTTPHeaders(new Map(Object.entries(extraHTTPHeaders)));
+        await page.setExtraHTTPHeaders(extraHTTPHeaders);
       }
       await page.goto(url, {
         timeout: 2 * 60 * 1000,
