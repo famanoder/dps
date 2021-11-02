@@ -13,7 +13,7 @@
   "author": "famanoder",
   "license": "MIT",
   "scripts": {
-    "start": "node ./bin/dps.js start"
+    "start": "node ./bin/dps-cli.js start"
   },
   "puppeteer_version": "1.7.0",
   "app": {

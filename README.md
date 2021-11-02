@@ -40,6 +40,8 @@ npm i draw-page-structure -g
 1. `dps init` 生成配置文件 `dps.config.js`
 2. 修改 `dps.config.js` 进行相关配置
 3. `dps start` 开始生成骨架屏
+   或
+   `npm run start` 即可使用本地的配置文件生成骨架屏
 
 ### Examples
 
